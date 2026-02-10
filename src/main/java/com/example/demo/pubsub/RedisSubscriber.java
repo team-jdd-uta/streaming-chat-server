@@ -1,6 +1,7 @@
 package com.example.demo.pubsub;
 
 import com.example.demo.model.ChatMessage;
+import com.example.demo.service.LongPollingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.connection.Message;
@@ -16,6 +17,7 @@ public class RedisSubscriber implements MessageListener {
 
     private final RedisTemplate<String, Object> redisTemplate; // RedisTemplate을 주입받아 사용
     private final SimpMessagingTemplate messagingTemplate; // 특정 Broker로 메시지를 전달
+    private final LongPollingService longPollingService;
 
     /**
      * Redis에서 메시지가 발행(publish)되면 대기하고 있던 onMessage가 해당 메시지를 받아 처리
@@ -26,8 +28,11 @@ public class RedisSubscriber implements MessageListener {
             // redis에서 발행된 데이터를 받아 deserialize
             ChatMessage chatMessage = (ChatMessage) redisTemplate.getValueSerializer().deserialize(message.getBody());
 
-            // WebSocket 구독자에게 채팅 메시지 발송
             if (chatMessage != null) {
+                // Long Polling 구독자에게 채팅 메시지 발송
+                longPollingService.broadcast(chatMessage.getRoomId(), chatMessage);
+
+                // WebSocket 구독자에게 채팅 메시지 발송 (기존 유지)
                 messagingTemplate.convertAndSend("/sub/chat/room/" + chatMessage.getRoomId(), chatMessage);
             }
         } catch (Exception e) {
