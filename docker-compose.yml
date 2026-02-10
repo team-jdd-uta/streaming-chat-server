@@ -1,0 +1,84 @@
+version: '3.8'
+
+services:
+  redis-node-1:
+    image: redis:7-alpine
+    container_name: redis-node-1
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-1/data:/data
+      - ./redis_cluster/node-1/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7000:7000"
+      - "17000:17000"
+    networks:
+      - redis-cluster-network
+
+  redis-node-2:
+    image: redis:7-alpine
+    container_name: redis-node-2
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-2/data:/data
+      - ./redis_cluster/node-2/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7001:7001"
+      - "17001:17001"
+    networks:
+      - redis-cluster-network
+
+  redis-node-3:
+    image: redis:7-alpine
+    container_name: redis-node-3
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-3/data:/data
+      - ./redis_cluster/node-3/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7002:7002"
+      - "17002:17002"
+    networks:
+      - redis-cluster-network
+
+  redis-node-4:
+    image: redis:7-alpine
+    container_name: redis-node-4
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-4/data:/data
+      - ./redis_cluster/node-4/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7003:7003"
+      - "17003:17003"
+    networks:
+      - redis-cluster-network
+
+  redis-node-5:
+    image: redis:7-alpine
+    container_name: redis-node-5
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-5/data:/data
+      - ./redis_cluster/node-5/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7004:7004"
+      - "17004:17004"
+    networks:
+      - redis-cluster-network
+
+  redis-node-6:
+    image: redis:7-alpine
+    container_name: redis-node-6
+    command: redis-server /usr/local/etc/redis/redis.conf
+    volumes:
+      - ./redis_cluster/node-6/data:/data
+      - ./redis_cluster/node-6/redis.conf:/usr/local/etc/redis/redis.conf
+    ports:
+      - "7005:7005"
+      - "17005:17005"
+    networks:
+      - redis-cluster-network
+
+networks:
+  redis-cluster-network:
+    driver: bridge
