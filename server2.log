@@ -5,23 +5,270 @@
  \\/  ___)| |_)| | | | | || (_| |  ) ) ) )
   '  |____| .__|_| |_|_| |_\__, | / / / /
  =========|_|==============|___/=/_/_/_/
-[32m :: Spring Boot :: [39m              [2m (v3.2.0)[0;39m
 
-[2m2026-02-10T17:17:03.436+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mcom.example.demo.Demo1Application       [0;39m [2m:[0;39m Starting Demo1Application v0.0.1-SNAPSHOT using Java 22.0.1 with PID 80061 (/Users/kim-yubin/Desktop/project/demo1/build/libs/demo1-0.0.1-SNAPSHOT.jar started by kim-yubin in /Users/kim-yubin/Desktop/project/demo1)
-[2m2026-02-10T17:17:03.439+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mcom.example.demo.Demo1Application       [0;39m [2m:[0;39m No active profile set, falling back to 1 default profile: "default"
-[2m2026-02-10T17:17:04.016+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Multiple Spring Data modules found, entering strict repository configuration mode
-[2m2026-02-10T17:17:04.018+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Bootstrapping Spring Data Redis repositories in DEFAULT mode.
-[2m2026-02-10T17:17:04.037+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36m.s.d.r.c.RepositoryConfigurationDelegate[0;39m [2m:[0;39m Finished Spring Data repository scanning in 8 ms. Found 0 Redis repository interfaces.
-[2m2026-02-10T17:17:04.348+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat initialized with port 8081 (http)
-[2m2026-02-10T17:17:04.355+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.apache.catalina.core.StandardService  [0;39m [2m:[0;39m Starting service [Tomcat]
-[2m2026-02-10T17:17:04.355+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.apache.catalina.core.StandardEngine   [0;39m [2m:[0;39m Starting Servlet engine: [Apache Tomcat/10.1.16]
-[2m2026-02-10T17:17:04.382+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.a.c.c.C.[Tomcat].[localhost].[/]      [0;39m [2m:[0;39m Initializing Spring embedded WebApplicationContext
-[2m2026-02-10T17:17:04.383+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mw.s.c.ServletWebServerApplicationContext[0;39m [2m:[0;39m Root WebApplicationContext: initialization completed in 884 ms
-[2m2026-02-10T17:17:05.015+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.s.b.w.embedded.tomcat.TomcatWebServer [0;39m [2m:[0;39m Tomcat started on port 8081 (http) with context path ''
-[2m2026-02-10T17:17:05.016+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m Starting...
-[2m2026-02-10T17:17:05.018+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m BrokerAvailabilityEvent[available=true, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@5514579e]]
-[2m2026-02-10T17:17:05.018+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m Started.
-[2m2026-02-10T17:17:05.029+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [           main][0;39m [2m[0;39m[36mcom.example.demo.Demo1Application       [0;39m [2m:[0;39m Started Demo1Application in 1.971 seconds (process running for 2.333)
-[2m2026-02-10T17:17:37.981+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [ionShutdownHook][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m Stopping...
-[2m2026-02-10T17:17:37.981+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [ionShutdownHook][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m BrokerAvailabilityEvent[available=false, SimpleBrokerMessageHandler [org.springframework.messaging.simp.broker.DefaultSubscriptionRegistry@5514579e]]
-[2m2026-02-10T17:17:37.981+09:00[0;39m [32m INFO[0;39m [35m80061[0;39m [2m---[0;39m [2m[demo1] [ionShutdownHook][0;39m [2m[0;39m[36mo.s.m.s.b.SimpleBrokerMessageHandler    [0;39m [2m:[0;39m Stopped.
+ :: Spring Boot ::                (v4.0.2)
+
+2026-02-11T19:53:09.375+09:00  INFO 30424 --- [demo1] [           main] com.example.demo.Demo1Application        : Starting Demo1Application v0.0.1-SNAPSHOT using Java 21.0.8 with PID 30424 (/Users/hyeon/workspace/mini-project/streaming-chat-server/build/libs/demo1-0.0.1-SNAPSHOT.jar started by hyeon in /Users/hyeon/workspace/mini-project/streaming-chat-server)
+2026-02-11T19:53:09.381+09:00  INFO 30424 --- [demo1] [           main] com.example.demo.Demo1Application        : No active profile set, falling back to 1 default profile: "default"
+2026-02-11T19:53:10.303+09:00  INFO 30424 --- [demo1] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Multiple Spring Data modules found, entering strict repository configuration mode
+2026-02-11T19:53:10.308+09:00  INFO 30424 --- [demo1] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Bootstrapping Spring Data Redis repositories in DEFAULT mode.
+2026-02-11T19:53:10.383+09:00  INFO 30424 --- [demo1] [           main] .s.d.r.c.RepositoryConfigurationDelegate : Finished Spring Data repository scanning in 35 ms. Found 0 Redis repository interfaces.
+2026-02-11T19:53:11.062+09:00  INFO 30424 --- [demo1] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat initialized with port 8081 (http)
+2026-02-11T19:53:11.087+09:00  INFO 30424 --- [demo1] [           main] o.apache.catalina.core.StandardService   : Starting service [Tomcat]
+2026-02-11T19:53:11.087+09:00  INFO 30424 --- [demo1] [           main] o.apache.catalina.core.StandardEngine    : Starting Servlet engine: [Apache Tomcat/11.0.15]
+2026-02-11T19:53:11.133+09:00  INFO 30424 --- [demo1] [           main] b.w.c.s.WebApplicationContextInitializer : Root WebApplicationContext: initialization completed in 1654 ms
+2026-02-11T19:53:11.353+09:00  WARN 30424 --- [demo1] [           main] i.n.r.d.DnsServerAddressStreamProviders  : Can not find io.netty.resolver.dns.macos.MacOSDnsServerAddressStreamProvider in the classpath, fallback to system defaults. This may result in incorrect DNS resolutions on MacOS. Check whether you have a dependency on 'io.netty:netty-resolver-dns-native-macos'
+2026-02-11T19:53:12.533+09:00  INFO 30424 --- [demo1] [           main] o.s.boot.tomcat.TomcatWebServer          : Tomcat started on port 8081 (http) with context path '/'
+2026-02-11T19:53:12.540+09:00  INFO 30424 --- [demo1] [           main] com.example.demo.Demo1Application        : Started Demo1Application in 3.773 seconds (process running for 4.421)
+2026-02-11T19:53:30.276+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] o.a.c.c.C.[Tomcat].[localhost].[/]       : Initializing Spring DispatcherServlet 'dispatcherServlet'
+2026-02-11T19:53:30.276+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Initializing Servlet 'dispatcherServlet'
+2026-02-11T19:53:30.277+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] o.s.web.servlet.DispatcherServlet        : Completed initialization in 1 ms
+2026-02-11T19:53:30.329+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: ENTER, Sender: guest, Message: 
+Remapping Redis node hostname from redis-node-1 to localhost for port 7000
+Remapping Redis node hostname from redis-node-2 to localhost for port 7001
+Remapping Redis node hostname from redis-node-3 to localhost for port 7002
+Remapping Redis node hostname from redis-node-4 to localhost for port 7003
+Remapping Redis node hostname from redis-node-5 to localhost for port 7004
+Remapping Redis node hostname from redis-node-6 to localhost for port 7005
+Remapping Redis node hostname from redis-node-1 to localhost for port 7000
+Remapping Redis node hostname from redis-node-1 to localhost for port 7000
+2026-02-11T19:53:30.690+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.example.demo.service.ChatRoomService   : Subscribed to Redis topic: 10
+2026-02-11T19:53:30.690+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: guest님이 입장하셨습니다.
+Remapping Redis node hostname from redis-node-1 to localhost for port 7000
+2026-02-11T19:53:30.729+09:00  INFO 30424 --- [demo1] [enerContainer-1] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: guest님이 입장하셨습니다.
+2026-02-11T19:53:30.730+09:00  INFO 30424 --- [demo1] [enerContainer-1] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 1, Sender: guest, Message: guest님이 입장하셨습니다., Timestamp: 1770807210729
+2026-02-11T19:53:34.050+09:00  INFO 30424 --- [demo1] [enerContainer-2] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: guest1님이 입장하셨습니다.
+2026-02-11T19:53:34.050+09:00  INFO 30424 --- [demo1] [enerContainer-2] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 2, Sender: guest1, Message: guest1님이 입장하셨습니다., Timestamp: 1770807214050
+2026-02-11T19:53:39.161+09:00  INFO 30424 --- [demo1] [enerContainer-3] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 10
+2026-02-11T19:53:39.161+09:00  INFO 30424 --- [demo1] [enerContainer-3] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 3, Sender: guest1, Message: 10, Timestamp: 1770807219161
+2026-02-11T19:53:39.823+09:00  INFO 30424 --- [demo1] [enerContainer-4] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 10
+2026-02-11T19:53:39.824+09:00  INFO 30424 --- [demo1] [enerContainer-4] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 4, Sender: guest1, Message: 10, Timestamp: 1770807219824
+2026-02-11T19:53:40.490+09:00  INFO 30424 --- [demo1] [enerContainer-5] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 123
+2026-02-11T19:53:40.490+09:00  INFO 30424 --- [demo1] [enerContainer-5] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 5, Sender: guest1, Message: 123, Timestamp: 1770807220490
+2026-02-11T19:53:41.000+09:00  INFO 30424 --- [demo1] [enerContainer-6] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 123
+2026-02-11T19:53:41.000+09:00  INFO 30424 --- [demo1] [enerContainer-6] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 6, Sender: guest1, Message: 123, Timestamp: 1770807221000
+2026-02-11T19:53:41.497+09:00  INFO 30424 --- [demo1] [enerContainer-7] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 14
+2026-02-11T19:53:41.497+09:00  INFO 30424 --- [demo1] [enerContainer-7] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 7, Sender: guest1, Message: 14, Timestamp: 1770807221497
+2026-02-11T19:53:41.739+09:00  INFO 30424 --- [demo1] [enerContainer-8] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 5
+2026-02-11T19:53:41.739+09:00  INFO 30424 --- [demo1] [enerContainer-8] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 8, Sender: guest1, Message: 5, Timestamp: 1770807221739
+2026-02-11T19:53:42.248+09:00  INFO 30424 --- [demo1] [enerContainer-9] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 513
+2026-02-11T19:53:42.248+09:00  INFO 30424 --- [demo1] [enerContainer-9] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 9, Sender: guest1, Message: 513, Timestamp: 1770807222248
+2026-02-11T19:53:43.192+09:00  INFO 30424 --- [demo1] [nerContainer-10] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest1, Message: 511
+2026-02-11T19:53:43.192+09:00  INFO 30424 --- [demo1] [nerContainer-10] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 10, Sender: guest1, Message: 511, Timestamp: 1770807223192
+2026-02-11T19:53:44.820+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 123
+2026-02-11T19:53:44.820+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 123
+2026-02-11T19:53:44.823+09:00  INFO 30424 --- [demo1] [nerContainer-11] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 123
+2026-02-11T19:53:44.823+09:00  INFO 30424 --- [demo1] [nerContainer-11] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 11, Sender: guest, Message: 123, Timestamp: 1770807224823
+2026-02-11T19:53:45.276+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 123
+2026-02-11T19:53:45.276+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 123
+2026-02-11T19:53:45.278+09:00  INFO 30424 --- [demo1] [nerContainer-12] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 123
+2026-02-11T19:53:45.278+09:00  INFO 30424 --- [demo1] [nerContainer-12] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 12, Sender: guest, Message: 123, Timestamp: 1770807225278
+2026-02-11T19:53:45.776+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 123
+2026-02-11T19:53:45.776+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 123
+2026-02-11T19:53:45.778+09:00  INFO 30424 --- [demo1] [nerContainer-13] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 123
+2026-02-11T19:53:45.778+09:00  INFO 30424 --- [demo1] [nerContainer-13] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 13, Sender: guest, Message: 123, Timestamp: 1770807225778
+2026-02-11T19:53:46.236+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 3
+2026-02-11T19:53:46.237+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 3
+2026-02-11T19:53:46.239+09:00  INFO 30424 --- [demo1] [nerContainer-14] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 3
+2026-02-11T19:53:46.239+09:00  INFO 30424 --- [demo1] [nerContainer-14] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 14, Sender: guest, Message: 3, Timestamp: 1770807226239
+2026-02-11T19:53:46.461+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 2
+2026-02-11T19:53:46.461+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 2
+2026-02-11T19:53:46.463+09:00  INFO 30424 --- [demo1] [nerContainer-15] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 2
+2026-02-11T19:53:46.464+09:00  INFO 30424 --- [demo1] [nerContainer-15] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 15, Sender: guest, Message: 2, Timestamp: 1770807226464
+2026-02-11T19:53:46.684+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 1
+2026-02-11T19:53:46.684+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 1
+2026-02-11T19:53:46.685+09:00  INFO 30424 --- [demo1] [nerContainer-16] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 1
+2026-02-11T19:53:46.686+09:00  INFO 30424 --- [demo1] [nerContainer-16] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 16, Sender: guest, Message: 1, Timestamp: 1770807226686
+2026-02-11T19:53:46.895+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 23
+2026-02-11T19:53:46.895+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 23
+2026-02-11T19:53:46.898+09:00  INFO 30424 --- [demo1] [nerContainer-17] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 23
+2026-02-11T19:53:46.898+09:00  INFO 30424 --- [demo1] [nerContainer-17] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 17, Sender: guest, Message: 23, Timestamp: 1770807226898
+2026-02-11T19:53:47.102+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 1
+2026-02-11T19:53:47.102+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 1
+2026-02-11T19:53:47.104+09:00  INFO 30424 --- [demo1] [nerContainer-18] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 1
+2026-02-11T19:53:47.104+09:00  INFO 30424 --- [demo1] [nerContainer-18] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 18, Sender: guest, Message: 1, Timestamp: 1770807227104
+2026-02-11T19:53:47.306+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 23
+2026-02-11T19:53:47.306+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 23
+2026-02-11T19:53:47.307+09:00  INFO 30424 --- [demo1] [nerContainer-19] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 23
+2026-02-11T19:53:47.308+09:00  INFO 30424 --- [demo1] [nerContainer-19] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 19, Sender: guest, Message: 23, Timestamp: 1770807227308
+2026-02-11T19:53:47.698+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 123
+2026-02-11T19:53:47.698+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 123
+2026-02-11T19:53:47.700+09:00  INFO 30424 --- [demo1] [nerContainer-20] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 123
+2026-02-11T19:53:47.700+09:00  INFO 30424 --- [demo1] [nerContainer-20] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 20, Sender: guest, Message: 123, Timestamp: 1770807227700
+2026-02-11T19:53:47.951+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 1
+2026-02-11T19:53:47.951+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 1
+2026-02-11T19:53:47.953+09:00  INFO 30424 --- [demo1] [nerContainer-21] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 1
+2026-02-11T19:53:47.953+09:00  INFO 30424 --- [demo1] [nerContainer-21] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 21, Sender: guest, Message: 1, Timestamp: 1770807227953
+2026-02-11T19:53:48.168+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 24
+2026-02-11T19:53:48.168+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 24
+2026-02-11T19:53:48.169+09:00  INFO 30424 --- [demo1] [nerContainer-22] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 24
+2026-02-11T19:53:48.169+09:00  INFO 30424 --- [demo1] [nerContainer-22] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 22, Sender: guest, Message: 24, Timestamp: 1770807228169
+2026-02-11T19:53:48.367+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 31
+2026-02-11T19:53:48.367+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 31
+2026-02-11T19:53:48.369+09:00  INFO 30424 --- [demo1] [nerContainer-23] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 31
+2026-02-11T19:53:48.369+09:00  INFO 30424 --- [demo1] [nerContainer-23] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 23, Sender: guest, Message: 31, Timestamp: 1770807228369
+2026-02-11T19:53:48.590+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 41
+2026-02-11T19:53:48.590+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 41
+2026-02-11T19:53:48.593+09:00  INFO 30424 --- [demo1] [nerContainer-24] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 41
+2026-02-11T19:53:48.593+09:00  INFO 30424 --- [demo1] [nerContainer-24] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 24, Sender: guest, Message: 41, Timestamp: 1770807228593
+2026-02-11T19:53:48.813+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 24
+2026-02-11T19:53:48.813+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 24
+2026-02-11T19:53:48.815+09:00  INFO 30424 --- [demo1] [nerContainer-25] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 24
+2026-02-11T19:53:48.815+09:00  INFO 30424 --- [demo1] [nerContainer-25] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 25, Sender: guest, Message: 24, Timestamp: 1770807228815
+2026-02-11T19:53:49.112+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 213
+2026-02-11T19:53:49.112+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 213
+2026-02-11T19:53:49.115+09:00  INFO 30424 --- [demo1] [nerContainer-26] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 213
+2026-02-11T19:53:49.116+09:00  INFO 30424 --- [demo1] [nerContainer-26] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 26, Sender: guest, Message: 213, Timestamp: 1770807229116
+2026-02-11T19:53:49.561+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 1
+2026-02-11T19:53:49.561+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 1
+2026-02-11T19:53:49.563+09:00  INFO 30424 --- [demo1] [nerContainer-27] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 1
+2026-02-11T19:53:49.563+09:00  INFO 30424 --- [demo1] [nerContainer-27] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 27, Sender: guest, Message: 1, Timestamp: 1770807229563
+2026-02-11T19:53:50.021+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 10, Type: TALK, Sender: guest, Message: 123
+2026-02-11T19:53:50.021+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 10, Message: 123
+2026-02-11T19:53:50.024+09:00  INFO 30424 --- [demo1] [nerContainer-28] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 10, Sender: guest, Message: 123
+2026-02-11T19:53:50.024+09:00  INFO 30424 --- [demo1] [nerContainer-28] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 10, History size: 28, Sender: guest, Message: 123, Timestamp: 1770807230024
+2026-02-11T19:54:18.470+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: null, Type: null, Sender: null, Message: null
+2026-02-11T19:54:18.471+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: null, Message: null
+2026-02-11T19:54:18.478+09:00 ERROR 30424 --- [demo1] [io-8081-exec-10] o.a.c.c.C.[.[.[/].[dispatcherServlet]    : Servlet.service() for servlet [dispatcherServlet] in context with path [] threw exception [Request processing failed: java.lang.IllegalArgumentException: a non-empty channel is required] with root cause
+
+java.lang.IllegalArgumentException: a non-empty channel is required
+	at org.springframework.util.Assert.hasText(Assert.java:254) ~[spring-core-7.0.3.jar!/:7.0.3]
+	at org.springframework.data.redis.core.RedisTemplate.convertAndSend(RedisTemplate.java:944) ~[spring-data-redis-4.0.2.jar!/:4.0.2]
+	at com.example.demo.service.impl.RedisMessageBrokerService.publish(RedisMessageBrokerService.java:18) ~[!/:0.0.1-SNAPSHOT]
+	at com.example.demo.controller.LongPollingChatController.message(LongPollingChatController.java:38) ~[!/:0.0.1-SNAPSHOT]
+	at java.base/jdk.internal.reflect.DirectMethodHandleAccessor.invoke(DirectMethodHandleAccessor.java:103) ~[na:na]
+	at java.base/java.lang.reflect.Method.invoke(Method.java:580) ~[na:na]
+	at org.springframework.web.method.support.InvocableHandlerMethod.doInvoke(InvocableHandlerMethod.java:258) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.method.support.InvocableHandlerMethod.invokeForRequest(InvocableHandlerMethod.java:190) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.mvc.method.annotation.ServletInvocableHandlerMethod.invokeAndHandle(ServletInvocableHandlerMethod.java:117) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.invokeHandlerMethod(RequestMappingHandlerAdapter.java:934) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter.handleInternal(RequestMappingHandlerAdapter.java:853) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.mvc.method.AbstractHandlerMethodAdapter.handle(AbstractHandlerMethodAdapter.java:86) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.DispatcherServlet.doDispatch(DispatcherServlet.java:963) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.DispatcherServlet.doService(DispatcherServlet.java:866) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.FrameworkServlet.processRequest(FrameworkServlet.java:1003) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.servlet.FrameworkServlet.doPost(FrameworkServlet.java:903) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:649) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.springframework.web.servlet.FrameworkServlet.service(FrameworkServlet.java:874) ~[spring-webmvc-7.0.3.jar!/:7.0.3]
+	at jakarta.servlet.http.HttpServlet.service(HttpServlet.java:710) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:128) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.websocket.server.WsFilter.doFilter(WsFilter.java:53) ~[tomcat-embed-websocket-11.0.15.jar!/:na]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.springframework.web.filter.RequestContextFilter.doFilterInternal(RequestContextFilter.java:100) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.springframework.web.filter.FormContentFilter.doFilterInternal(FormContentFilter.java:93) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.springframework.web.filter.CharacterEncodingFilter.doFilterInternal(CharacterEncodingFilter.java:199) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.springframework.web.filter.OncePerRequestFilter.doFilter(OncePerRequestFilter.java:116) ~[spring-web-7.0.3.jar!/:7.0.3]
+	at org.apache.catalina.core.ApplicationFilterChain.doFilter(ApplicationFilterChain.java:107) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.core.StandardWrapperValve.invoke(StandardWrapperValve.java:165) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.core.StandardContextValve.invoke(StandardContextValve.java:77) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.authenticator.AuthenticatorBase.invoke(AuthenticatorBase.java:482) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.core.StandardHostValve.invoke(StandardHostValve.java:113) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.valves.ErrorReportValve.invoke(ErrorReportValve.java:83) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.core.StandardEngineValve.invoke(StandardEngineValve.java:72) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.catalina.connector.CoyoteAdapter.service(CoyoteAdapter.java:341) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.coyote.http11.Http11Processor.service(Http11Processor.java:397) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.coyote.AbstractProcessorLight.process(AbstractProcessorLight.java:63) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.coyote.AbstractProtocol$ConnectionHandler.process(AbstractProtocol.java:903) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.util.net.NioEndpoint$SocketProcessor.doRun(NioEndpoint.java:1778) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.util.net.SocketProcessorBase.run(SocketProcessorBase.java:52) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor.runWorker(ThreadPoolExecutor.java:946) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.util.threads.ThreadPoolExecutor$Worker.run(ThreadPoolExecutor.java:480) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at org.apache.tomcat.util.threads.TaskThread$WrappingRunnable.run(TaskThread.java:57) ~[tomcat-embed-core-11.0.15.jar!/:na]
+	at java.base/java.lang.Thread.run(Thread.java:1583) ~[na:na]
+
+2026-02-11T19:54:23.482+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: ENTER, Sender: guest, Message: 
+2026-02-11T19:54:23.490+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.example.demo.service.ChatRoomService   : Subscribed to Redis topic: 1
+2026-02-11T19:54:23.490+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: guest님이 입장하셨습니다.
+Remapping Redis node hostname from redis-node-2 to localhost for port 7001
+2026-02-11T19:54:23.501+09:00  INFO 30424 --- [demo1] [nerContainer-29] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest, Message: guest님이 입장하셨습니다.
+2026-02-11T19:54:23.501+09:00  INFO 30424 --- [demo1] [nerContainer-29] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 1, Sender: guest, Message: guest님이 입장하셨습니다., Timestamp: 1770807263501
+2026-02-11T19:54:24.366+09:00  INFO 30424 --- [demo1] [nerContainer-30] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: guest19님이 입장하셨습니다.
+2026-02-11T19:54:24.367+09:00  INFO 30424 --- [demo1] [nerContainer-30] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 2, Sender: guest19, Message: guest19님이 입장하셨습니다., Timestamp: 1770807264367
+2026-02-11T19:54:26.135+09:00  INFO 30424 --- [demo1] [nerContainer-31] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: ㅅㄷㄴ
+2026-02-11T19:54:26.136+09:00  INFO 30424 --- [demo1] [nerContainer-31] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 3, Sender: guest19, Message: ㅅㄷㄴ, Timestamp: 1770807266136
+2026-02-11T19:54:26.669+09:00  INFO 30424 --- [demo1] [nerContainer-32] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: ㅅ
+2026-02-11T19:54:26.669+09:00  INFO 30424 --- [demo1] [nerContainer-32] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 4, Sender: guest19, Message: ㅅ, Timestamp: 1770807266669
+2026-02-11T19:54:27.306+09:00  INFO 30424 --- [demo1] [nerContainer-33] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: ㄷㄷㅂㅈ
+2026-02-11T19:54:27.307+09:00  INFO 30424 --- [demo1] [nerContainer-33] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 5, Sender: guest19, Message: ㄷㄷㅂㅈ, Timestamp: 1770807267307
+2026-02-11T19:54:28.302+09:00  INFO 30424 --- [demo1] [nerContainer-34] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: qwe
+2026-02-11T19:54:28.303+09:00  INFO 30424 --- [demo1] [nerContainer-34] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 6, Sender: guest19, Message: qwe, Timestamp: 1770807268303
+2026-02-11T19:54:28.937+09:00  INFO 30424 --- [demo1] [nerContainer-35] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: qwek
+2026-02-11T19:54:28.938+09:00  INFO 30424 --- [demo1] [nerContainer-35] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 7, Sender: guest19, Message: qwek, Timestamp: 1770807268938
+2026-02-11T19:54:29.192+09:00  INFO 30424 --- [demo1] [nerContainer-36] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: as
+2026-02-11T19:54:29.193+09:00  INFO 30424 --- [demo1] [nerContainer-36] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 8, Sender: guest19, Message: as, Timestamp: 1770807269192
+2026-02-11T19:54:30.231+09:00  INFO 30424 --- [demo1] [nerContainer-37] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: drjfgkkfd
+2026-02-11T19:54:30.233+09:00  INFO 30424 --- [demo1] [nerContainer-37] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 9, Sender: guest19, Message: drjfgkkfd, Timestamp: 1770807270233
+2026-02-11T19:54:31.278+09:00  INFO 30424 --- [demo1] [nerContainer-38] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: sdfkjlsdkf
+2026-02-11T19:54:31.279+09:00  INFO 30424 --- [demo1] [nerContainer-38] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 10, Sender: guest19, Message: sdfkjlsdkf, Timestamp: 1770807271279
+2026-02-11T19:54:31.982+09:00  INFO 30424 --- [demo1] [nerContainer-39] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: qerjklsd
+2026-02-11T19:54:31.983+09:00  INFO 30424 --- [demo1] [nerContainer-39] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 11, Sender: guest19, Message: qerjklsd, Timestamp: 1770807271983
+2026-02-11T19:54:32.777+09:00  INFO 30424 --- [demo1] [nerContainer-40] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: dsngfkd
+2026-02-11T19:54:32.778+09:00  INFO 30424 --- [demo1] [nerContainer-40] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 12, Sender: guest19, Message: dsngfkd, Timestamp: 1770807272778
+2026-02-11T19:54:33.568+09:00  INFO 30424 --- [demo1] [nerContainer-41] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: rnekrq
+2026-02-11T19:54:33.568+09:00  INFO 30424 --- [demo1] [nerContainer-41] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 13, Sender: guest19, Message: rnekrq, Timestamp: 1770807273568
+2026-02-11T19:54:34.194+09:00  INFO 30424 --- [demo1] [nerContainer-42] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: rqwe
+2026-02-11T19:54:34.196+09:00  INFO 30424 --- [demo1] [nerContainer-42] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 14, Sender: guest19, Message: rqwe, Timestamp: 1770807274195
+2026-02-11T19:55:07.764+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: ENTER, Sender: guest32131, Message: 
+2026-02-11T19:55:07.766+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: guest32131님이 입장하셨습니다.
+2026-02-11T19:55:07.774+09:00  INFO 30424 --- [demo1] [nerContainer-43] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: guest32131님이 입장하셨습니다.
+2026-02-11T19:55:07.774+09:00  INFO 30424 --- [demo1] [nerContainer-43] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 1, Sender: guest32131, Message: guest32131님이 입장하셨습니다., Timestamp: 1770807307774
+2026-02-11T19:55:11.656+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: qwewq
+2026-02-11T19:55:11.656+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: qwewq
+2026-02-11T19:55:11.660+09:00  INFO 30424 --- [demo1] [nerContainer-44] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: qwewq
+2026-02-11T19:55:11.661+09:00  INFO 30424 --- [demo1] [nerContainer-44] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 2, Sender: guest32131, Message: qwewq, Timestamp: 1770807311661
+2026-02-11T19:55:11.963+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: eqwe
+2026-02-11T19:55:11.964+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: eqwe
+2026-02-11T19:55:11.967+09:00  INFO 30424 --- [demo1] [nerContainer-45] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: eqwe
+2026-02-11T19:55:11.967+09:00  INFO 30424 --- [demo1] [nerContainer-45] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 3, Sender: guest32131, Message: eqwe, Timestamp: 1770807311967
+2026-02-11T19:55:12.153+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: qw
+2026-02-11T19:55:12.153+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: qw
+2026-02-11T19:55:12.157+09:00  INFO 30424 --- [demo1] [nerContainer-46] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: qw
+2026-02-11T19:55:12.158+09:00  INFO 30424 --- [demo1] [nerContainer-46] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 4, Sender: guest32131, Message: qw, Timestamp: 1770807312158
+2026-02-11T19:55:12.374+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: q
+2026-02-11T19:55:12.375+09:00  INFO 30424 --- [demo1] [nio-8081-exec-6] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: q
+2026-02-11T19:55:12.380+09:00  INFO 30424 --- [demo1] [nerContainer-47] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: q
+2026-02-11T19:55:12.380+09:00  INFO 30424 --- [demo1] [nerContainer-47] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 5, Sender: guest32131, Message: q, Timestamp: 1770807312380
+2026-02-11T19:55:12.536+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: w
+2026-02-11T19:55:12.537+09:00  INFO 30424 --- [demo1] [nio-8081-exec-7] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: w
+2026-02-11T19:55:12.539+09:00  INFO 30424 --- [demo1] [nerContainer-48] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: w
+2026-02-11T19:55:12.539+09:00  INFO 30424 --- [demo1] [nerContainer-48] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 6, Sender: guest32131, Message: w, Timestamp: 1770807312539
+2026-02-11T19:55:12.713+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: e
+2026-02-11T19:55:12.714+09:00  INFO 30424 --- [demo1] [nio-8081-exec-8] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: e
+2026-02-11T19:55:12.717+09:00  INFO 30424 --- [demo1] [nerContainer-49] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: e
+2026-02-11T19:55:12.718+09:00  INFO 30424 --- [demo1] [nerContainer-49] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 7, Sender: guest32131, Message: e, Timestamp: 1770807312718
+2026-02-11T19:55:12.864+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: q
+2026-02-11T19:55:12.864+09:00  INFO 30424 --- [demo1] [nio-8081-exec-9] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: q
+2026-02-11T19:55:12.868+09:00  INFO 30424 --- [demo1] [nerContainer-50] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: q
+2026-02-11T19:55:12.868+09:00  INFO 30424 --- [demo1] [nerContainer-50] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 8, Sender: guest32131, Message: q, Timestamp: 1770807312868
+2026-02-11T19:55:13.071+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: qw
+2026-02-11T19:55:13.071+09:00  INFO 30424 --- [demo1] [io-8081-exec-10] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: qw
+2026-02-11T19:55:13.076+09:00  INFO 30424 --- [demo1] [nerContainer-51] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: qw
+2026-02-11T19:55:13.077+09:00  INFO 30424 --- [demo1] [nerContainer-51] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 9, Sender: guest32131, Message: qw, Timestamp: 1770807313077
+2026-02-11T19:55:13.472+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: e
+2026-02-11T19:55:13.473+09:00  INFO 30424 --- [demo1] [nio-8081-exec-1] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: e
+2026-02-11T19:55:13.475+09:00  INFO 30424 --- [demo1] [nerContainer-52] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: e
+2026-02-11T19:55:13.476+09:00  INFO 30424 --- [demo1] [nerContainer-52] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 10, Sender: guest32131, Message: e, Timestamp: 1770807313476
+2026-02-11T19:55:17.003+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest, Message: 12
+2026-02-11T19:55:17.004+09:00  INFO 30424 --- [demo1] [nio-8081-exec-2] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: 12
+2026-02-11T19:55:17.008+09:00  INFO 30424 --- [demo1] [nerContainer-53] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest, Message: 12
+2026-02-11T19:55:17.008+09:00  INFO 30424 --- [demo1] [nerContainer-53] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 11, Sender: guest, Message: 12, Timestamp: 1770807317008
+2026-02-11T19:55:17.334+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest, Message: 31
+2026-02-11T19:55:17.334+09:00  INFO 30424 --- [demo1] [nio-8081-exec-3] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: 31
+2026-02-11T19:55:17.339+09:00  INFO 30424 --- [demo1] [nerContainer-54] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest, Message: 31
+2026-02-11T19:55:17.339+09:00  INFO 30424 --- [demo1] [nerContainer-54] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 12, Sender: guest, Message: 31, Timestamp: 1770807317339
+2026-02-11T19:55:18.298+09:00  INFO 30424 --- [demo1] [nerContainer-55] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: 2
+2026-02-11T19:55:18.298+09:00  INFO 30424 --- [demo1] [nerContainer-55] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 13, Sender: guest19, Message: 2, Timestamp: 1770807318298
+2026-02-11T19:55:18.787+09:00  INFO 30424 --- [demo1] [nerContainer-56] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest19, Message: 31
+2026-02-11T19:55:18.787+09:00  INFO 30424 --- [demo1] [nerContainer-56] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 14, Sender: guest19, Message: 31, Timestamp: 1770807318787
+2026-02-11T19:55:20.974+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: 2
+2026-02-11T19:55:20.974+09:00  INFO 30424 --- [demo1] [nio-8081-exec-4] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: 2
+2026-02-11T19:55:20.977+09:00  INFO 30424 --- [demo1] [nerContainer-57] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: 2
+2026-02-11T19:55:20.978+09:00  INFO 30424 --- [demo1] [nerContainer-57] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 15, Sender: guest32131, Message: 2, Timestamp: 1770807320978
+2026-02-11T19:55:21.284+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Message received - RoomId: 1, Type: TALK, Sender: guest32131, Message: 1
+2026-02-11T19:55:21.284+09:00  INFO 30424 --- [demo1] [nio-8081-exec-5] c.e.d.c.LongPollingChatController        : [CONTROLLER] Publishing message to Redis - RoomId: 1, Message: 1
+2026-02-11T19:55:21.291+09:00  INFO 30424 --- [demo1] [nerContainer-58] c.example.demo.pubsub.RedisSubscriber    : [REDIS] Message received from Redis - RoomId: 1, Sender: guest32131, Message: 1
+2026-02-11T19:55:21.292+09:00  INFO 30424 --- [demo1] [nerContainer-58] c.e.demo.service.LongPollingService      : [LONG_POLL] Message saved to history - RoomId: 1, History size: 16, Sender: guest32131, Message: 1, Timestamp: 1770807321292

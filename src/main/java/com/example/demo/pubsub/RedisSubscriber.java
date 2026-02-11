@@ -27,11 +27,15 @@ public class RedisSubscriber implements MessageListener {
             ChatMessage chatMessage = (ChatMessage) redisTemplate.getValueSerializer().deserialize(message.getBody());
 
             if (chatMessage != null) {
+                log.info("[REDIS] Message received from Redis - RoomId: {}, Sender: {}, Message: {}",
+                        chatMessage.getRoomId(), chatMessage.getSender(), chatMessage.getMessage());
                 // Long Polling 구독자에게 채팅 메시지 발송
                 longPollingService.broadcast(chatMessage.getRoomId(), chatMessage);
+            } else {
+                log.warn("[REDIS] Received null message from Redis");
             }
         } catch (Exception e) {
-            log.error("Error deserializing message or sending to WebSocket: {}", e.getMessage(), e);
+            log.error("[REDIS] Error deserializing message or sending to Long Polling: {}", e.getMessage(), e);
         }
     }
 }

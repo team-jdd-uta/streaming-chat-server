@@ -19,6 +19,7 @@ Redis Cluster 기반 Pub/Sub으로 실시간 스트리밍 채팅을 제공하는
 - Spring WebSocket (STOMP)
 - Spring Data Redis (Lettuce)
 - Redis 7 (Cluster)
+- Redis Exporter + Prometheus + Grafana
 - Docker Compose
 
 ## Getting Started
@@ -49,6 +50,20 @@ docker exec -it redis-node-1 redis-cli --cluster create \
 ```bash
 curl -X POST "http://localhost:8080/chat/room?name=demo"
 ```
+
+## Redis Monitoring (Grafana)
+`docker-compose.yml`에 Redis 모니터링 스택이 포함되어 있습니다.
+
+- Grafana: `http://localhost:3000` (`admin` / `admin`)
+- Prometheus: `http://localhost:9090`
+
+기본 동작:
+- `redis-exporter-1~6`가 각 Redis 노드(`7000~7005`) 메트릭 수집
+- Prometheus가 exporter 메트릭 scrape
+- Grafana가 Prometheus datasource/대시보드를 자동 프로비저닝
+
+대시보드:
+- Grafana 접속 후 `Dashboards` -> `Redis` 폴더 -> `Redis Cluster Overview`
 
 ## Configuration
 `src/main/resources/application.properties`

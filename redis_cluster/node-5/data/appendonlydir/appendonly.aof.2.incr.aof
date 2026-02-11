@@ -1,0 +1,14 @@
+*2
+$6
+SELECT
+$1
+0
+*4
+$4
+HSET
+$9
+CHAT_ROOM
+$36
+e5a0989e-2b93-4714-9b77-c6f7a7bfaca5
+$63
+{"roomId":"e5a0989e-2b93-4714-9b77-c6f7a7bfaca5","name":"demo"}
