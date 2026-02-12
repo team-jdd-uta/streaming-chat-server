@@ -36,6 +36,8 @@ public class RedisMessageBrokerService implements MessageBrokerService {
     public void publish(String topic, Object message) {
         // 변경: Pub/Sub publish 전에 Stream에 먼저 XADD 수행
         // 이유: 실시간 전달(convertAndSend) 이전에 메시지 영속 흔적을 남겨 재처리/조회 가능성을 확보하기 위해
+        // TODO : stream이 죽어있으면 publish 자체가 실패하는 문제 처리 필요
+        // 재시도 로직 또는 장애 격리 방안 고민 필요
         appendToStream(topic, message);
         redisTemplate.convertAndSend(topic, message);
     }
