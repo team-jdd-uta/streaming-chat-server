@@ -1,0 +1,9 @@
+<mapper namespace="mapper.videoMapper">
+
+<p>
+    할일. Mapper에 SQL 다 만들어놓고 Sequence 써서 id들 채번하기
+
+</p>
+
+
+</mapper>

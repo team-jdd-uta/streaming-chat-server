@@ -1,0 +1,11 @@
+<mapper namespace="mapper.WatchHistoryMapper">
+
+    <select id="selectWatchHistoryByCustomerId">
+
+    </select>
+
+    <select id="selectWatchHistoryByVideoId">
+
+    </select>
+
+</mapper>
