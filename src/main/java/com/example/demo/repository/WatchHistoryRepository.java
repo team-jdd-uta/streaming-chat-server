@@ -10,10 +10,5 @@ import java.util.List;
 @Repository
 public interface WatchHistoryRepository extends JpaRepository<WatchHistory, String> {
 
-    @Query(value = "SELECT * FROM watch_history WHERE user_id = :userId", nativeQuery = true)
-    List<WatchHistory> findByUserIdNative(@Param("userId") String userId);
-
-    @Query(value = "SELECT * FROM watch_history WHERE video_id = :videoId", nativeQuery = true)
-    List<WatchHistory> findByVideoIdNative(@Param("videoId") Long videoId);
 }
 

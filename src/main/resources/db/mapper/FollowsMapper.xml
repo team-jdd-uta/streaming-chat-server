@@ -1,4 +1,31 @@
-<mapper namespace="mapper.FollowsMapper">
+<mapper namespace="mapper.FollowsMapper" parameterType="map" resultType="CustomerDTO">
+    <select id="selectFollowingByUserId">
+        /*
+        내가 팔로우 하는 사람
+        */
+        SELECT /*+index(fs) */fs.followed_user_id, (select c.name
+                                                    from customers c
+                                                    where c.user_id = fs.followed_user_id) as name
 
+        FROM follows fs
+        WHERE fs.following_user_id = #{userId}
+        ORDER BY fs.followed_user_id
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <select id="selectFollowedByUserId">
+        /*
+        나를 팔로우 하는 사람
+        */
+
+        SELECT /*+index(fs) */fs.following_user_id, (select c.name
+                                                    from customers c
+                                                    where c.user_id = fs.following_user_id) as name
+
+        FROM follows fs
+        WHERE fs.followed_user_id = #{userId}
+        ORDER BY fs.following_user_id
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
 
 </mapper>

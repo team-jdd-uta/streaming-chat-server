@@ -24,8 +24,8 @@ CREATE TABLE follows (
                              ON DELETE CASCADE
 );
 
-CREATE INDEX idx_follows_following_user_id ON follows(following_user_id);
-CREATE INDEX idx_follows_followed_user_id  ON follows(followed_user_id);
+CREATE INDEX idx_follows_following_user_id ON follows(following_user_id, followed_user_id);
+CREATE INDEX idx_follows_followed_user_id  ON follows(followed_user_id, following_user_id);
 
 -- --------------------------
 -- Video Table
@@ -76,8 +76,8 @@ SUBPARTITIONS 4
     PARTITION watch_history_max   VALUES LESS THAN (MAXVALUE)
 );
 
-CREATE INDEX idx_watch_user_id  ON watch_history(user_id);
-CREATE INDEX idx_watch_video_id ON watch_history(video_id);
+CREATE INDEX idx_watch_user_id  ON watch_history(user_id, started_at) LOCAL;
+CREATE INDEX idx_watch_video_id ON watch_history(video_id, started_at) GLOBAL;
 
 -- --------------------------
 -- Video Foreign Key

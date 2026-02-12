@@ -11,6 +11,7 @@ import java.time.LocalDateTime;
 @NoArgsConstructor
 @AllArgsConstructor
 @Builder
+@IdClass(FollowsId.class)
 public class Follows {
 
     @Id
@@ -24,19 +25,5 @@ public class Follows {
     @Column(nullable = false)
     private LocalDateTime followedAt;
 
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "following_user_id", insertable = false, updatable = false)
-    private Customer followingUser;
-
-    @ManyToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name = "followed_user_id", insertable = false, updatable = false)
-    private Customer followedUser;
-
-    @PrePersist
-    protected void onCreate() {
-        if (followedAt == null) {
-            followedAt = LocalDateTime.now();
-        }
-    }
 }
 
