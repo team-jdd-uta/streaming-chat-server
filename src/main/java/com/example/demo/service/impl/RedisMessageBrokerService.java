@@ -17,6 +17,7 @@ import java.util.Map;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -40,11 +41,33 @@ public class RedisMessageBrokerService implements MessageBrokerService {
                 }
             }
     );
+    // 변경: Pub/Sub 재시도를 비동기로 수행할 전용 실행기 추가
+    // 이유: Redis Cluster failover 순간의 일시 장애를 흡수하되, 수신 스레드를 오래 블로킹하지 않기 위해
+    private final ExecutorService pubSubRetryExecutor = Executors.newSingleThreadExecutor(
+            new ThreadFactory() {
+                private final AtomicInteger seq = new AtomicInteger();
+
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread thread = new Thread(r, "chat-pubsub-retry-" + seq.incrementAndGet());
+                    thread.setDaemon(true);
+                    return thread;
+                }
+            }
+    );
 
     @Value("${chat.stream.key-prefix:chat:stream:room:}")
     // 변경: Stream 키 접두사 설정 추가
     // 이유: roomId만으로 충돌/가독성 문제가 생기지 않도록 키 네이밍 규칙을 통일하기 위해
     private String streamKeyPrefix;
+    @Value("${chat.pubsub.publish.retry.max-attempts:3}")
+    // 변경: Pub/Sub 실패 시 재시도 횟수 설정 추가
+    // 이유: Redis failover 구간의 순간 실패를 재시도로 복구하기 위해
+    private int pubSubRetryMaxAttempts;
+    @Value("${chat.pubsub.publish.retry.backoff-ms:200}")
+    // 변경: Pub/Sub 재시도 간격 설정 추가
+    // 이유: 장애 순간에 과도한 연속 재시도를 피하고 Redis 회복 시간을 주기 위해
+    private long pubSubRetryBackoffMs;
 
     public RedisMessageBrokerService(
             RedisTemplate<String, Object> redisTemplate,
@@ -56,10 +79,22 @@ public class RedisMessageBrokerService implements MessageBrokerService {
 
     @Override
     public void publish(String topic, Object message) {
-        // 변경: 실시간 전달(Pub/Sub)을 먼저 수행
-        // 이유: 채팅 메시지 체감 지연을 낮추고, Stream 장애가 실시간 전달을 막지 않도록 하기 위해
-        // TODO : 반대로 redis pub/sub이 죽으면 어떻게 되는지 해결
-        redisTemplate.convertAndSend(topic, message);
+        // 변경: Stream 저장을 먼저 비동기 큐에 태워 Pub/Sub 오류와 완전히 분리
+        // 이유: Pub/Sub 전송 실패가 발생해도 Stream 영속 시도 자체가 누락되지 않게 하기 위해
+        enqueueStreamAppend(topic, message);
+        try {
+            // 변경: Pub/Sub는 우선 즉시 1회 전송
+            // 이유: 정상 상태에서 실시간 전송 지연을 최소화하기 위해
+            redisTemplate.convertAndSend(topic, message);
+        } catch (Exception e) {
+            // 변경: 첫 전송 실패 시 비동기 재시도
+            // 이유: Redis Cluster failover 시점의 일시 오류를 흡수하기 위해
+            log.warn("Failed to publish message to Redis Pub/Sub on first attempt. topic={}", topic, e);
+            enqueuePubSubRetry(topic, message);
+        }
+    }
+
+    private void enqueueStreamAppend(String topic, Object message) {
         // 변경: Stream 저장(XADD)은 비동기로 분리
         // 이유: 저장 지연/장애를 실시간 브로드캐스트 경로와 격리하기 위해
         streamAppendExecutor.execute(() -> {
@@ -69,6 +104,32 @@ public class RedisMessageBrokerService implements MessageBrokerService {
                 log.warn("Failed to append chat message to stream. topic={}", topic, e);
             }
         });
+    }
+
+    private void enqueuePubSubRetry(String topic, Object message) {
+        pubSubRetryExecutor.execute(() -> retryPublish(topic, message));
+    }
+
+    private void retryPublish(String topic, Object message) {
+        int attempts = Math.max(pubSubRetryMaxAttempts, 0);
+        for (int attempt = 1; attempt <= attempts; attempt++) {
+            try {
+                TimeUnit.MILLISECONDS.sleep(pubSubRetryBackoffMs);
+                redisTemplate.convertAndSend(topic, message);
+                log.info("Recovered Redis Pub/Sub publish after retry. topic={}, attempt={}", topic, attempt);
+                return;
+            } catch (InterruptedException interruptedException) {
+                Thread.currentThread().interrupt();
+                log.warn("Pub/Sub retry interrupted. topic={}", topic, interruptedException);
+                return;
+            } catch (Exception e) {
+                if (attempt == attempts) {
+                    log.error("Failed Redis Pub/Sub publish after retries. topic={}, attempts={}", topic, attempts, e);
+                    return;
+                }
+                log.warn("Redis Pub/Sub retry failed. topic={}, attempt={}", topic, attempt, e);
+            }
+        }
     }
 
     private void appendToStream(String topic, Object message) {
@@ -100,5 +161,6 @@ public class RedisMessageBrokerService implements MessageBrokerService {
     @PreDestroy
     public void shutdownExecutor() {
         streamAppendExecutor.shutdown();
+        pubSubRetryExecutor.shutdown();
     }
 }
