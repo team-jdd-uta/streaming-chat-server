@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.NoSuchElementException;
 
 @RequiredArgsConstructor
 @RestController
@@ -23,12 +24,27 @@ public class ChatRoomController {
     // 특정 채팅방 반환
     @GetMapping("/room/{roomId}")
     public ChatRoom findRoomById(@PathVariable String roomId) {
-        return chatRoomService.findRoomById(roomId);
+        if (isBlank(roomId)) {
+            throw new IllegalArgumentException("roomId is required");
+        }
+        ChatRoom chatRoom = chatRoomService.findRoomById(roomId.trim());
+        if (chatRoom == null) {
+            throw new NoSuchElementException("chat room not found: " + roomId);
+        }
+        return chatRoom;
     }
 
     // 채팅방 생성
     @PostMapping("/room")
     public ChatRoom createRoom(@RequestParam String name) {
-        return chatRoomService.createChatRoom(name);
+        if (isBlank(name)) {
+            throw new IllegalArgumentException("room name is required");
+        }
+        return chatRoomService.createChatRoom(name.trim());
+    }
+
+    //TODO : controller 단에서 비즈니스 로직이?
+    private boolean isBlank(String value) {
+        return value == null || value.trim().isEmpty();
     }
 }

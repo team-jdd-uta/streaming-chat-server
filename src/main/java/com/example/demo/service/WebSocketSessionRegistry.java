@@ -17,6 +17,7 @@ import java.util.concurrent.ConcurrentHashMap;
 public class WebSocketSessionRegistry {
 
     private static final CloseStatus RECONNECT_CLOSE_STATUS = new CloseStatus(4001, "Reconnect required");
+    private static final int INVALID_PAYLOAD_CLOSE_CODE = 4002;
 
     private final Map<String, SessionMeta> sessions = new ConcurrentHashMap<>();
 
@@ -62,6 +63,16 @@ public class WebSocketSessionRegistry {
             }
         }
         return closed;
+    }
+
+    public boolean closeSession(String sessionId, String reason) {
+        SessionMeta meta = sessions.get(sessionId);
+        if (meta == null) {
+            return false;
+        }
+        // CloseStatus reason 길이 제한을 고려해 짧은 기본 사유를 사용한다.
+        String closeReason = (reason == null || reason.isBlank()) ? "Invalid payload" : reason;
+        return close(meta.session, new CloseStatus(INVALID_PAYLOAD_CLOSE_CODE, closeReason));
     }
 
     public boolean markTtlNoticeSent(String sessionId) {
