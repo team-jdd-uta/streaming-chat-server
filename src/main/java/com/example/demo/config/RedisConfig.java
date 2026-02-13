@@ -3,10 +3,8 @@ package com.example.demo.config;
 import com.example.demo.model.ChatMessage;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.cluster.ClusterClientOptions;
-import io.lettuce.core.internal.HostAndPort;
 import io.lettuce.core.resource.ClientResources;
 import io.lettuce.core.resource.DefaultClientResources;
-import io.lettuce.core.resource.MappingSocketAddressResolver;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
@@ -24,9 +22,6 @@ import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
 
 import java.util.List;
-import java.util.Set;
-import java.util.function.Function;
-import java.util.stream.Collectors;
 
 @Configuration
 public class RedisConfig {
@@ -46,24 +41,11 @@ public class RedisConfig {
 
     @Bean(destroyMethod = "shutdown")
     public ClientResources clientResources() {
-        final Set<Integer> clusterPorts = redisNodes.stream()
-                .map(node -> Integer.parseInt(node.split(":")[1]))
-                .collect(Collectors.toSet());
-
-        return DefaultClientResources.builder()
-                .socketAddressResolver(MappingSocketAddressResolver.create(new Function<HostAndPort, HostAndPort>() {
-                    @Override
-                    public HostAndPort apply(HostAndPort hostAndPort) {
-                        // When running Redis Cluster in Docker, nodes often advertise container hostnames
-                        // (e.g., redis-node-4). Remap those to localhost for local development.
-                        if (!"localhost".equals(hostAndPort.getHostText()) && clusterPorts.contains(hostAndPort.getPort())) {
-                            System.out.println("Remapping Redis node hostname from " + hostAndPort.getHostText() + " to localhost for port " + hostAndPort.getPort());
-                            return HostAndPort.of("localhost", hostAndPort.getPort());
-                        }
-                        return hostAndPort;
-                    }
-                }))
-                .build();
+        // 변경 요청 반영(도커 환경 전용):
+        // - Redis Cluster에서 광고하는 redis-node-* 호스트명을 그대로 사용한다.
+        // 요청 배경:
+        // - "도커에서만 동작하게 해줘도 될 거 같은데" 요청에 맞춰 localhost 강제 치환 로직을 제거했다.
+        return DefaultClientResources.create();
     }
 
 
