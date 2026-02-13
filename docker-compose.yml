@@ -259,13 +259,14 @@ services:
     image: gvenzl/oracle-xe:21
     container_name: oracle-db-21
     environment:
-      ORACLE_PASSWORD: mypassword # SYS, SYSTEM 계정 비밀번호
+      ORACLE_PASSWORD: mypassword # SYS, SYSTEM 비밀번호
       ORACLE_CHARACTERSET: AL32UTF8
     ports:
-      - "1521:1521" # 기본 listener 포트
-      - "5500:5500" # EM Express (웹 UI) 포트
+      - "1521:1521" # Listener
+      - "5500:5500" # EM Express
     volumes:
       - oradata:/opt/oracle/oradata
+      - ./init-user.sql:/docker-entrypoint-initdb.d/init-user.sql
     networks:
       - redis-cluster-network
 
@@ -273,7 +274,6 @@ services:
 # Volumes
 # --------------------------
 volumes:
-  pgdata:
   oradata:
   mongodb_data:
   redis_stream_data:
