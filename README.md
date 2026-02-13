@@ -25,29 +25,35 @@ Redis Cluster 기반 Pub/Sub으로 실시간 스트리밍 채팅을 제공하는
 
 ### 사전 준비
 1. Docker / Docker Compose
-2. Redis Stream(6379) 컨테이너가 먼저 실행되어 있어야 함
-- `RedisStreamAndMongo`의 redis 컨테이너(`redis-stream`) 실행 필요
+2. `streaming-chat-server/.env` 파일 값 확인
+- `COMMENT_CONSUMER_IMAGE`
+- `CHAT_SERVER_ORACLE_URL`
+- `CHAT_SERVER_ORACLE_USERNAME`
+- `CHAT_SERVER_ORACLE_PASSWORD`
+- `CHAT_SERVER_MONGO_URI`
+- `CHAT_SERVER_REDIS_CLUSTER_NODES`
+3. `streaming-chat-server/consumer.env` 값 확인
+- `READ_BLOCK_MS`, `BATCH_INTERVAL_MS` 등 consumer 동작값은 해당 외부 파일에서 수정
 
-### 1) Redis Cluster 실행
+### 1) 전체 인프라 실행
 ```bash
 cd streaming-chat-server
-docker compose up -d redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5 redis-node-6
+cp .env.example .env
+cp consumer.env.example consumer.env
+docker compose up -d
 ```
 
-### 2) 클러스터 초기 생성
+`redis-cluster-init` 서비스가 자동으로 Redis Cluster를 초기화한다.
+
+### 2) 상태 확인
 ```bash
-docker exec -it redis-node-1 redis-cli --cluster create \
-  redis-node-1:7000 redis-node-2:7001 redis-node-3:7002 \
-  redis-node-4:7003 redis-node-5:7004 redis-node-6:7005 \
-  --cluster-replicas 1
+docker compose ps
+docker compose logs -f chat-server
+docker compose logs -f comment-consumer
+docker compose logs -f redis-cluster-init
 ```
 
-### 3) chat-server 컨테이너 실행(단일 1개)
-```bash
-docker compose up -d chat-server
-```
-
-### 4) 확인
+### 3) 확인
 ```bash
 curl http://localhost:8080/chat/rooms
 ```
@@ -68,7 +74,6 @@ docker logs -f chat-server
 ## 종료
 ```bash
 cd streaming-chat-server
-docker compose stop chat-server
 docker compose down -v
 ```
 
