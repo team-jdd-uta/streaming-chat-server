@@ -38,3 +38,6 @@ out/
 
 ### redis_cluster ###
 redis_cluster/**/data/
+
+.env
+consumer.env
