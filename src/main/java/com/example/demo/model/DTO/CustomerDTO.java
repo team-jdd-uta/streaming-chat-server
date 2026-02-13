@@ -1,6 +1,9 @@
 package com.example.demo.model.DTO;
 
+import lombok.Data;
+
+@Data
 public class CustomerDTO {
-    public String customerID;
+    public String customerId;
     public String customerName;
 }

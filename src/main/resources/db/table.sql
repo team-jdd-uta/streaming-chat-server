@@ -44,12 +44,15 @@ CREATE TABLE video (
 CREATE TABLE category (
                           category_id         NUMBER PRIMARY KEY,
                           category_name       VARCHAR2(100),
-                          parent_category_id  NUMBER,
-                          CONSTRAINT fk_category_parent
-                              FOREIGN KEY (parent_category_id)
-                                  REFERENCES category(category_id)
-                                  ON DELETE CASCADE
+                          parent_category_id  NUMBER
 ) ORGANIZATION INDEX;
+
+-- Add foreign key constraint separately
+ALTER TABLE category
+    ADD CONSTRAINT fk_category_parent
+        FOREIGN KEY (parent_category_id)
+            REFERENCES category(category_id)
+            ON DELETE CASCADE;
 
 -- --------------------------
 -- Watch History Table (Partitioned)

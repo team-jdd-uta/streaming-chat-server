@@ -1,7 +1,14 @@
 package com.example.demo.model.DTO;
 
+import lombok.Data;
+import lombok.Getter;
+import lombok.Setter;
+
+@Data
+@Getter
+@Setter
 public class WatchHistoryDTO {
-    public String user_id;
-    public int video_id;
-    public String started_at;
+    public int videoId;
+    public String videoName;
+    public String startedAt;
 }

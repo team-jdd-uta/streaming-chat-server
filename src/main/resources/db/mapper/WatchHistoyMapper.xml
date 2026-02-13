@@ -1,26 +1,34 @@
-<mapper namespace="mapper.WatchHistoryMapper" parameterType="map" >
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
-    <select id="selectWatchHistoriesByCustomerId" resultType="VideoDTO">
-        /*
+<mapper namespace="com.example.mapper.WatchHistoryMapper">
+
+    <resultMap id="WatchHistoryMap" type="com.example.demo.model.DTO.WatchHistoryDTO">
+        <result property="videoId" column="video_id"/>
+        <result property="videoName" column="video_name"/>
+        <result property="startedAt" column="started_at"/>
+    </resultMap>
+
+    <select id="selectRecentWatchHistoriesByUserId" parameterType="map" resultMap="WatchHistoryMap">
+
+/*
         started_at이 파티셔닝 선두 컬럼이기 때문에 일정 기간에 대한 데이터 필수 삽입해야 함.
         기간정보는 서비스 요구사항에 따라 변경할것. (최대 조회가능 기간 5년... 등등)
         파티션 프루닝 잘 되는지 확인하기...
         */
-        SELECT /*+index(wh idx_watch_user_id) */wh.video_id as video_id, (SELECT v.video_name
-                                                                            FROM videos v
-                                                                            WHERE v.video_id = wh.video_id) AS video_name,
-               (SELECT v.thumbnail_url
-                FROM videos v
-                WHERE v.video_id = wh.video_id) AS thumbnail_url,
-               wh.started_at
+        SELECT /*+index(wh idx_watch_user_id) */wh.video_id as video_id,
+               (SELECT v.video_name FROM video v WHERE v.video_id = wh.video_id) AS video_name,
+               wh.started_at as started_at
         FROM watch_history wh
-        WHERE wh.user_id = #{userId}
-        AND wh.started_at > SYSDATE - 30
+        WHERE wh.user_id = 'user_005'
+          AND wh.started_at > SYSDATE - 300
         ORDER BY wh.started_at desc
-        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+
     </select>
 
-    <select id="selectWatchHistoryByVideoId">
+    <select id="selectWatchHistoryByVideoId" parameterType="map" resultType="com.example.demo.model.DTO.WatchHistoryDTO">
         /*
         인덱스 인트 사용 금지
         조회수가 낮은 영상 조회시는 괜찮은데
@@ -30,7 +38,7 @@
         SELECT user_id
         FROM watch_history
         WHERE video_id = #{videoId}
-        AND started_at > SYSDATE - 30
+        AND started_at > SYSDATE - 300
         ORDER BY started_at desc
     </select>
 

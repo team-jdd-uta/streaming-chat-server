@@ -2,17 +2,21 @@ package com.example.demo.service;
 
 import com.example.demo.entity.Customer;
 import com.example.demo.repository.CustomerRepository;
+import com.example.demo.repository.FollowsRepository;
 import org.springframework.stereotype.Service;
-
-import java.util.Optional;
 
 @Service
 public class CustomerService {
 
     CustomerRepository customerRepository;
+    FollowsRepository followsRepository;
 
-    public Optional<Customer> getCustomerById(String id) {
-        return customerRepository.findById(id);
+    public CustomerService(CustomerRepository customerRepository) {
+        this.customerRepository = customerRepository;
+    }
+
+    public String getCustomerById(String id) {
+        return String.valueOf(customerRepository.findById(id));
     }
 
     public Customer saveCustomer(Customer customer) {
