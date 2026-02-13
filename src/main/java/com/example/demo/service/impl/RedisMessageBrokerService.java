@@ -2,6 +2,8 @@ package com.example.demo.service.impl;
 
 import com.example.demo.model.ChatMessage;
 import com.example.demo.service.MessageBrokerService;
+import jakarta.annotation.PreDestroy;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.data.redis.connection.stream.MapRecord;
@@ -12,12 +14,32 @@ import org.springframework.stereotype.Service;
 
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.ExecutorService;
+import java.util.concurrent.Executors;
+import java.util.concurrent.ThreadFactory;
+import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
+@Slf4j
 public class RedisMessageBrokerService implements MessageBrokerService {
 
     private final RedisTemplate<String, Object> redisTemplate;
     private final StringRedisTemplate streamStringRedisTemplate;
+    // 변경: Stream 저장을 비동기 처리할 전용 실행기 추가
+    // 이유: Pub/Sub 지연시간에 Stream XADD 네트워크 왕복이 직접 영향을 주지 않게 분리하기 위해
+    private final ExecutorService streamAppendExecutor = Executors.newFixedThreadPool(
+            2,
+            new ThreadFactory() {
+                private final AtomicInteger seq = new AtomicInteger();
+
+                @Override
+                public Thread newThread(Runnable r) {
+                    Thread thread = new Thread(r, "chat-stream-append-" + seq.incrementAndGet());
+                    thread.setDaemon(true);
+                    return thread;
+                }
+            }
+    );
 
     @Value("${chat.stream.key-prefix:chat:stream:room:}")
     // 변경: Stream 키 접두사 설정 추가
@@ -34,12 +56,19 @@ public class RedisMessageBrokerService implements MessageBrokerService {
 
     @Override
     public void publish(String topic, Object message) {
-        // 변경: Pub/Sub publish 전에 Stream에 먼저 XADD 수행
-        // 이유: 실시간 전달(convertAndSend) 이전에 메시지 영속 흔적을 남겨 재처리/조회 가능성을 확보하기 위해
-        // TODO : stream이 죽어있으면 publish 자체가 실패하는 문제 처리 필요
-        // 재시도 로직 또는 장애 격리 방안 고민 필요
-        appendToStream(topic, message);
+        // 변경: 실시간 전달(Pub/Sub)을 먼저 수행
+        // 이유: 채팅 메시지 체감 지연을 낮추고, Stream 장애가 실시간 전달을 막지 않도록 하기 위해
+        // TODO : 반대로 redis pub/sub이 죽으면 어떻게 되는지 해결
         redisTemplate.convertAndSend(topic, message);
+        // 변경: Stream 저장(XADD)은 비동기로 분리
+        // 이유: 저장 지연/장애를 실시간 브로드캐스트 경로와 격리하기 위해
+        streamAppendExecutor.execute(() -> {
+            try {
+                appendToStream(topic, message);
+            } catch (Exception e) {
+                log.warn("Failed to append chat message to stream. topic={}", topic, e);
+            }
+        });
     }
 
     private void appendToStream(String topic, Object message) {
@@ -66,5 +95,10 @@ public class RedisMessageBrokerService implements MessageBrokerService {
 
     private String safe(String value) {
         return value == null ? "" : value;
+    }
+
+    @PreDestroy
+    public void shutdownExecutor() {
+        streamAppendExecutor.shutdown();
     }
 }
