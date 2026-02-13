@@ -11,11 +11,9 @@ import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.stereotype.Service;
 
 import jakarta.annotation.PostConstruct;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
-import java.util.stream.Collectors;
+import java.util.concurrent.ConcurrentHashMap;
 
 @RequiredArgsConstructor
 @Service
@@ -29,12 +27,14 @@ public class ChatRoomService {
     // Redis 메시지 리스너 컨테이너와 발행자 (Publisher)
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisSubscriber redisSubscriber; // Redis Pub/Sub 메시지를 처리하는 구독자
-    private Map<String, ChannelTopic> topics; // 채팅방별 Topic 정보를 담아 Redis Listener에 등록
+    // 변경: 멀티 스레드 환경에서 안전하게 채팅방 Topic을 관리하기 위해 ConcurrentHashMap 사용
+    // 이유: 동시에 ENTER 요청이 들어올 때 HashMap 기반 race condition을 방지하기 위해
+    private Map<String, ChannelTopic> topics;
 
     @PostConstruct
     private void init() {
         opsHashChatRoom = redisTemplate.opsForHash();
-        topics = new HashMap<>();
+        topics = new ConcurrentHashMap<>();
     }
 
     /**
@@ -64,13 +64,14 @@ public class ChatRoomService {
      * 채팅방 입장 시, 해당 채팅방의 메시지를 받기 위한 Redis Topic 구독
      */
     public void enterChatRoom(String roomId) {
-        ChannelTopic topic = topics.get(roomId);
-        if (topic == null) {
-            topic = new ChannelTopic(roomId);
-            redisMessageListenerContainer.addMessageListener(redisSubscriber, topic);
-            topics.put(roomId, topic);
-            log.info("Subscribed to Redis topic: {}", roomId);
-        }
+        // 변경: computeIfAbsent로 "조회 + 생성 + 등록"을 원자적으로 처리
+        // 이유: 동시 요청에서 동일 roomId에 대한 중복 listener 등록을 줄이기 위해
+        topics.computeIfAbsent(roomId, id -> {
+            ChannelTopic newTopic = new ChannelTopic(id);
+            redisMessageListenerContainer.addMessageListener(redisSubscriber, newTopic);
+            log.info("Subscribed to Redis topic: {}", id);
+            return newTopic;
+        });
     }
 
     /**

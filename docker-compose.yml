@@ -1,6 +1,9 @@
 version: '3.8'
 
 services:
+  # --------------------------
+  # Redis Cluster Nodes
+  # --------------------------
   redis-node-1:
     image: redis:7-alpine
     container_name: redis-node-1
@@ -79,6 +82,33 @@ services:
     networks:
       - redis-cluster-network
 
+  # --------------------------
+  # Oracle Database Service
+  # --------------------------
+  oracle-db:
+    image: gvenzl/oracle-xe:21
+    container_name: oracle-db-21
+    environment:
+      ORACLE_PASSWORD: mypassword       # SYS, SYSTEM 계정 비밀번호
+      ORACLE_CHARACTERSET: AL32UTF8
+    ports:
+      - "1521:1521"     # 기본 listener 포트
+      - "5500:5500"     # EM Express (웹 UI) 포트
+    volumes:
+      - oradata:/opt/oracle/oradata
+    networks:
+      - redis-cluster-network
+
+# --------------------------
+# Volumes
+# --------------------------
+volumes:
+  pgdata:
+  oradata:
+
+# --------------------------
+# Networks
+# --------------------------
 networks:
   redis-cluster-network:
     driver: bridge

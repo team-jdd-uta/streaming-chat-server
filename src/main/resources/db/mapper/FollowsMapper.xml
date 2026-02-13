@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.example.mapper.FollowsMapper">
+
+    <resultMap id="WatchHistoryMap" type="com.example.demo.model.DTO.CustomerDTO">
+        <result property="customerId" column="customerId"/>
+        <result property="customerName" column="customerName"/>
+    </resultMap>
+
+    <select id="selectFollowingByUserId" parameterType="map" resultMap="WatchHistoryMap">
+        /*
+        내가 팔로우 하는 사람
+
+        범위처리 해야됨...
+        */
+        SELECT fs.followed_user_id as customerId,
+               (SELECT c.name FROM customer c WHERE c.user_id = fs.followed_user_id) AS customerName
+        FROM follows fs
+        WHERE fs.following_user_id = #{userId}
+        ORDER BY fs.followed_user_id
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+    </select>
+
+    <select id="selectFollowedByUserId" parameterType="map" resultType="com.example.demo.model.DTO.CustomerDTO">
+        /*
+        나를 팔로우 하는 사람
+        */
+        SELECT /*+index(fs) */fs.following_user_id as customerID,
+               (select c.name from customer c where c.user_id = fs.following_user_id) as customerName
+        FROM follows fs
+        WHERE fs.followed_user_id = #{userId}
+        ORDER BY fs.following_user_id
+        OFFSET #{offset} ROWS FETCH NEXT #{limit} ROWS ONLY
+
+    </select>
+
+    <select id="selectFollowedCount" parameterType="String" resultType="int">
+        /*
+        나를 팔로우 하는 사람수
+        */
+
+        SELECT /*+index(fs) */count(fs.followed_user_id)
+        FROM follows fs
+        WHERE fs.followed_user_id = #{userId}
+    </select>
+
+    <select id="selectFollowingCount" parameterType="String" resultType="int">
+        /*
+        내가 팔로우 하는 사람수
+        */
+
+        SELECT /*+index(fs) */count(fs.following_user_id)
+        FROM follows fs
+        WHERE fs.following_user_id = #{userId}
+    </select>
+</mapper>
