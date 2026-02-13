@@ -2,34 +2,36 @@
 
 Redis Cluster 기반 Pub/Sub으로 실시간 스트리밍 채팅을 제공하는 Spring Boot 프로젝트.
 
-## Overview
+## 개요
 - WebSocket(STOMP) 기반 실시간 채팅
 - Redis Cluster Pub/Sub으로 메시지 브로드캐스트
 - 채팅방 생성/조회 API 제공
 
-## Architecture
+## 아키텍처
 - Client -> WebSocket `/ws/chat`
 - Client -> `/pub/chat/message`로 메시지 발행
 - 서버는 Redis Pub/Sub에 메시지 publish
 - RedisSubscriber가 메시지 수신 후 `/sub/chat/room/{roomId}`로 브로드캐스트
 
-## Tech Stack
+## 기술 스택
 - Java 21
-- Spring Boot 3.2.x
+- Spring Boot
 - Spring WebSocket (STOMP)
 - Spring Data Redis (Lettuce)
 - Redis 7 (Cluster)
 - Docker Compose
 
-## Getting Started
+## 실행 방식(권장: Docker 단일 chat-server)
 
-### Prerequisites
-- JDK 21
-- Docker + Docker Compose
+### 사전 준비
+1. Docker / Docker Compose
+2. Redis Stream(6379) 컨테이너가 먼저 실행되어 있어야 함
+- `RedisStreamAndMongo`의 redis 컨테이너(`redis-stream`) 실행 필요
 
 ### 1) Redis Cluster 실행
 ```bash
-docker compose up -d
+cd streaming-chat-server
+docker compose up -d redis-node-1 redis-node-2 redis-node-3 redis-node-4 redis-node-5 redis-node-6
 ```
 
 ### 2) 클러스터 초기 생성
@@ -40,51 +42,36 @@ docker exec -it redis-node-1 redis-cli --cluster create \
   --cluster-replicas 1
 ```
 
-### 3) 애플리케이션 실행
+### 3) chat-server 컨테이너 실행(단일 1개)
 ```bash
-./gradlew bootRun
+docker compose up -d chat-server
 ```
 
-### 4) 채팅방 생성 예시
+### 4) 확인
 ```bash
-curl -X POST "http://localhost:8080/chat/room?name=demo"
+curl http://localhost:8080/chat/rooms
 ```
 
-## Configuration
-`src/main/resources/application.properties`
-```properties
-spring.redis.cluster.nodes=localhost:7000,localhost:7001,localhost:7002,localhost:7003,localhost:7004,localhost:7005
-server.port=8080
+## 리소스 제한(chat-server)
+`streaming-chat-server/docker-compose.yml`에 다음 제한이 적용된다.
+- CPU: `2.0`
+- Memory limit: `4g`
+- Memory reservation: `2g`
+
+## 로그
+- chat-server 로그 파일: `streaming-chat-server/server1.log`
+- 컨테이너 로그 확인:
+```bash
+docker logs -f chat-server
 ```
 
-## REST API
-- `GET /chat/rooms` 모든 채팅방 조회
-- `GET /chat/room/{roomId}` 특정 채팅방 조회
-- `POST /chat/room?name={name}` 채팅방 생성
-
-## WebSocket
-- Handshake: `/ws/chat` (SockJS 지원)
-- Publish: `/pub/chat/message`
-- Subscribe: `/sub/chat/room/{roomId}`
-
-### Message Payload
-```json
-{
-  "type": "ENTER",
-  "roomId": "room-id",
-  "sender": "user",
-  "message": "hello"
-}
+## 종료
+```bash
+cd streaming-chat-server
+docker compose stop chat-server
+docker compose down -v
 ```
-`type`: `ENTER`, `TALK`, `QUIT`
 
-## Notes (Local Dev)
-Redis Cluster가 컨테이너 호스트네임(`redis-node-*`)으로 노드를 광고하므로,
-로컬 앱에서 연결하려면 다음 중 하나가 필요합니다.
-
-- 애플리케이션에서 host remap 적용 (Lettuce `MappingSocketAddressResolver`)
-- 또는 로컬 `/etc/hosts`에 `redis-node-1~6` 매핑 추가
-
-## Troubleshooting
-- `UnknownHostException redis-node-*`
-  로컬 앱이 컨테이너 호스트네임을 해석하지 못함 -> 위 Notes 참고
+## 참고: 로컬 Java 실행(레거시)
+기존 `./gradlew clean build` + `./start_servers.sh` 방식도 사용할 수 있지만,
+현재 테스트 기준은 chat-server Docker 단일 컨테이너 실행이다.

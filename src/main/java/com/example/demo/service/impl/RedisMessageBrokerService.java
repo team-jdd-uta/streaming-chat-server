@@ -81,6 +81,9 @@ public class RedisMessageBrokerService implements MessageBrokerService {
             fields.put("type", chatMessage.getType() == null ? "" : chatMessage.getType().name());
             fields.put("roomId", safe(chatMessage.getRoomId()));
             fields.put("sender", safe(chatMessage.getSender()));
+            // 변경 요청 반영:
+            // - Stream에도 msgId를 저장해 메시지 단위 유실 추적/사후 분석이 가능하도록 한다.
+            fields.put("msgId", safe(chatMessage.getMsgId()));
             fields.put("message", safe(chatMessage.getMessage()));
         } else {
             fields.put("payload", String.valueOf(message));

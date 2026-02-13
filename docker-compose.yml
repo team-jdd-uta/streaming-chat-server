@@ -1,6 +1,52 @@
-version: '3.8'
-
 services:
+  chat-server:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat-server
+    # 변경 요청 반영:
+    # - Dockerfile ENTRYPOINT(java -jar /app/app.jar)에 전달될 실행 인자를 배열로 명시한다.
+    # 이유:
+    # - 기존 sh -c 문자열은 JVM 옵션으로 적용되지 않아 application.properties 기본값(localhost)이 사용되는 문제가 있었다.
+    command:
+      - --server.port=8080
+      - --spring.redis.cluster.nodes=redis-node-1:7000,redis-node-2:7001,redis-node-3:7002,redis-node-4:7003,redis-node-5:7004,redis-node-6:7005
+      - --chat.stream.redis.host=host.docker.internal
+      - --chat.stream.redis.port=6379
+    ports:
+      - "8080:8080"
+    # 변경 요청 반영:
+    # - chat server 컨테이너 리소스 상한을 CPU 2Core / MEM 4GB로 지정한다.
+    cpus: "2.0"
+    mem_limit: "4g"
+    mem_reservation: "2g"
+    environment:
+      # 변경 요청 반영:
+      # - "메모리가 천천히만 내려가서 오래 걸린다"는 피드백 대응.
+      # - 유휴 구간에서도 G1 주기 GC가 동작하도록 하고, 힙/오프힙 상한을 명시해
+      #   테스트 후 RSS가 장시간 높게 유지되는 현상을 완화한다.
+      JAVA_TOOL_OPTIONS: >-
+        -XX:InitialRAMPercentage=10
+        -XX:MaxRAMPercentage=35
+        -XX:MaxHeapFreeRatio=20
+        -XX:MinHeapFreeRatio=10
+        -XX:G1PeriodicGCInterval=15000
+        -XX:+ExplicitGCInvokesConcurrent
+        -XX:MaxDirectMemorySize=256m
+        -Xss512k
+    restart: unless-stopped
+    depends_on:
+      - redis-node-1
+      - redis-node-2
+      - redis-node-3
+      - redis-node-4
+      - redis-node-5
+      - redis-node-6
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - redis-cluster-network
+
   # --------------------------
   # Redis Cluster Nodes
   # --------------------------
@@ -89,11 +135,11 @@ services:
     image: gvenzl/oracle-xe:21
     container_name: oracle-db-21
     environment:
-      ORACLE_PASSWORD: mypassword       # SYS, SYSTEM 계정 비밀번호
+      ORACLE_PASSWORD: mypassword # SYS, SYSTEM 계정 비밀번호
       ORACLE_CHARACTERSET: AL32UTF8
     ports:
-      - "1521:1521"     # 기본 listener 포트
-      - "5500:5500"     # EM Express (웹 UI) 포트
+      - "1521:1521" # 기본 listener 포트
+      - "5500:5500" # EM Express (웹 UI) 포트
     volumes:
       - oradata:/opt/oracle/oradata
     networks:
