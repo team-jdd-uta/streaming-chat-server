@@ -20,6 +20,7 @@ import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.data.redis.listener.RedisMessageListenerContainer;
 import org.springframework.data.redis.serializer.RedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor;
 
 import java.util.List;
 
@@ -38,6 +39,18 @@ public class RedisConfig {
     // 변경: Stream 저장용 Redis 포트를 설정값으로 주입 (기본 6379)
     // 이유: 환경별 포트 차이를 코드 수정 없이 설정 파일로 제어하기 위해
     private int streamRedisPort;
+    @Value("${chat.redis.listener.task-executor.core-pool-size:8}")
+    private int redisListenerCorePoolSize;
+    @Value("${chat.redis.listener.task-executor.max-pool-size:64}")
+    private int redisListenerMaxPoolSize;
+    @Value("${chat.redis.listener.task-executor.queue-capacity:20000}")
+    private int redisListenerQueueCapacity;
+    @Value("${chat.redis.listener.subscription-executor.core-pool-size:4}")
+    private int redisSubscriptionCorePoolSize;
+    @Value("${chat.redis.listener.subscription-executor.max-pool-size:16}")
+    private int redisSubscriptionMaxPoolSize;
+    @Value("${chat.redis.listener.subscription-executor.queue-capacity:1000}")
+    private int redisSubscriptionQueueCapacity;
 
     @Bean(destroyMethod = "shutdown")
     public ClientResources clientResources() {
@@ -55,11 +68,43 @@ public class RedisConfig {
      */
     @Bean
     public RedisMessageListenerContainer redisMessageListenerContainer(
-            @Qualifier("redisConnectionFactory") RedisConnectionFactory connectionFactory
+            @Qualifier("redisConnectionFactory") RedisConnectionFactory connectionFactory,
+            @Qualifier("redisListenerTaskExecutor") ThreadPoolTaskExecutor redisListenerTaskExecutor,
+            @Qualifier("redisSubscriptionTaskExecutor") ThreadPoolTaskExecutor redisSubscriptionTaskExecutor
     ) {
         RedisMessageListenerContainer container = new RedisMessageListenerContainer();
         container.setConnectionFactory(connectionFactory);
+        container.setTaskExecutor(redisListenerTaskExecutor);
+        container.setSubscriptionExecutor(redisSubscriptionTaskExecutor);
         return container;
+    }
+
+    @Bean("redisListenerTaskExecutor")
+    public ThreadPoolTaskExecutor redisListenerTaskExecutor() {
+        // Redis 메시지 리스너 콜백 처리용 풀
+        // 목적: 구독 채널 처리량이 순간 증가해도 메인 애플리케이션 스레드와 분리해 보호
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadNamePrefix("redis-listener-");
+        executor.setCorePoolSize(redisListenerCorePoolSize);
+        executor.setMaxPoolSize(redisListenerMaxPoolSize);
+        executor.setQueueCapacity(redisListenerQueueCapacity);
+        executor.setAllowCoreThreadTimeOut(true);
+        executor.initialize();
+        return executor;
+    }
+
+    @Bean("redisSubscriptionTaskExecutor")
+    public ThreadPoolTaskExecutor redisSubscriptionTaskExecutor() {
+        // 구독 등록/해지 등 subscription 관리용 풀
+        // 목적: 리스닝 처리와 subscription 관리를 분리해 지연 전파를 줄임
+        ThreadPoolTaskExecutor executor = new ThreadPoolTaskExecutor();
+        executor.setThreadNamePrefix("redis-subscription-");
+        executor.setCorePoolSize(redisSubscriptionCorePoolSize);
+        executor.setMaxPoolSize(redisSubscriptionMaxPoolSize);
+        executor.setQueueCapacity(redisSubscriptionQueueCapacity);
+        executor.setAllowCoreThreadTimeOut(true);
+        executor.initialize();
+        return executor;
     }
 
     @Bean
