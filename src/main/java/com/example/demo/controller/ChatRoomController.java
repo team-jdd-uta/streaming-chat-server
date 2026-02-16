@@ -1,8 +1,13 @@
 package com.example.demo.controller;
 
+import com.example.demo.entity.WatchHistory;
 import com.example.demo.model.ChatRoom;
+import com.example.demo.model.DTO.WatchHistoryDTO;
 import com.example.demo.service.ChatRoomService;
+import com.example.demo.service.WatchHistoryService;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;

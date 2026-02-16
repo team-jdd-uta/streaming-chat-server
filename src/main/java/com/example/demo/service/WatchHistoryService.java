@@ -4,6 +4,7 @@ import com.example.demo.entity.WatchHistory;
 import com.example.demo.model.DTO.WatchHistoryDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashMap;
 import java.util.List;
@@ -24,6 +25,15 @@ public class WatchHistoryService {
         params.put("offset", offset);
 
         return sqlSession.selectList("com.example.mapper.WatchHistoryMapper.selectRecentWatchHistoriesByUserId", params);
+    }
 
+    @Transactional
+    public boolean insertWatchHistory(WatchHistory watchHistory) {
+        int result = sqlSession.insert("com.example.mapper.WatchHistoryMapper.insertWatchHistory", watchHistory);
+        System.out.println("Inserted WatchHistory: " + watchHistory + ", Result: " + result);
+        if(result > 0) {
+            return true;
+        }
+        return false;
     }
 }
