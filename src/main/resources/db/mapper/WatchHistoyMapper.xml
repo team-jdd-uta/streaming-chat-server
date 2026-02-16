@@ -42,4 +42,9 @@
         ORDER BY started_at desc
     </select>
 
+    <insert id="insertWatchHistory" parameterType="com.example.demo.model.DTO.WatchHistoryDTO">
+        INSERT INTO watch_history (user_id, video_id, started_at, ended_at)
+        VALUES (#{userId}, #{videoId}, #{startedAt,jdbcType=TIMESTAMP}, #{endedAt,jdbcType=TIMESTAMP})
+    </insert>
+
 </mapper>
