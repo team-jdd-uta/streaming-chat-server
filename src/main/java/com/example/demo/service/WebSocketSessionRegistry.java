@@ -56,6 +56,9 @@ public class WebSocketSessionRegistry {
      *   room별 refcount가 감소되도록 보장한다.
      */
     public void unregister(String sessionId) {
+        if (sessionId == null || sessionId.isBlank()){
+            return;
+        }
         sessions.remove(sessionId);
         ChatRoomService chatRoomService = chatRoomServiceProvider.getIfAvailable();
         // 변경: 비정상 종료(새로고침/브라우저 종료)에서도 room별 leave를 보장해 refcount 누수를 방지한다.
