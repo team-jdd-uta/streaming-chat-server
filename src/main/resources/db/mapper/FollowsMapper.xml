@@ -16,8 +16,10 @@
 
         범위처리 해야됨...
         */
-        SELECT fs.followed_user_id as customerId,
-               (SELECT c.name FROM customer c WHERE c.user_id = fs.followed_user_id) AS customerName
+        SELECT /*+index(fs) */fs.followed_user_id as customerId, (SELECT c.name
+                                                    FROM customer c
+                                                    WHERE c.user_id = fs.followed_user_id
+                                                    ) AS customerName
         FROM follows fs
         WHERE fs.following_user_id = #{userId}
         ORDER BY fs.followed_user_id
