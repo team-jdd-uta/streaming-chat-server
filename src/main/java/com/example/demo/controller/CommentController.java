@@ -15,7 +15,6 @@ import java.util.List;
 @RestController
 @RequestMapping("/api/comments")
 @Tag(name = "댓글", description = "댓글 관리 API")
-@CrossOrigin(origins = "*")
 public class CommentController {
 
     private static final Logger logger = LoggerFactory.getLogger(CommentController.class);
