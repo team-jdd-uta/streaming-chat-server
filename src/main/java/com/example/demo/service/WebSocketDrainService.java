@@ -25,8 +25,8 @@ public class WebSocketDrainService {
         draining.set(enabled);
         if (enabled) {
             drainStartedAt.compareAndSet(null, Instant.now());
-            return;
+        } else {
+            drainStartedAt.set(null);
         }
-        drainStartedAt.set(null);
     }
 }
