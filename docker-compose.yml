@@ -62,7 +62,7 @@ services:
     build:
       context: .
       dockerfile: Dockerfile
-    container_name: chat-server
+    container_name: chat-server-1
     # 변경 요청 반영:
     # - Dockerfile ENTRYPOINT(java -jar /app/app.jar)에 전달될 실행 인자를 배열로 명시한다.
     # 이유:
@@ -104,6 +104,12 @@ services:
         -XX:MaxDirectMemorySize=256m
         -Xss512k
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8080'"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
     depends_on:
       redis:
         condition: service_started
@@ -129,6 +135,86 @@ services:
         condition: service_completed_successfully
     extra_hosts:
       - "host.docker.internal:host-gateway"
+    networks:
+      - redis-cluster-network
+
+  chat-server-2:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: chat-server-2
+    command:
+      - --server.port=8081
+      - --spring.redis.cluster.nodes=${CHAT_SERVER_REDIS_CLUSTER_NODES:-redis-node-1:7000,redis-node-2:7001,redis-node-3:7002,redis-node-4:7003,redis-node-5:7004,redis-node-6:7005}
+      - --chat.stream.redis.host=${CHAT_SERVER_STREAM_REDIS_HOST:-redis}
+      - --chat.stream.redis.port=${CHAT_SERVER_STREAM_REDIS_PORT:-6379}
+      - --spring.datasource.url=${CHAT_SERVER_ORACLE_URL:-jdbc:oracle:thin:@oracle-db:1521/XEPDB1}
+      - --spring.datasource.username=${CHAT_SERVER_ORACLE_USERNAME:-SYSTEM}
+      - --spring.datasource.password=${CHAT_SERVER_ORACLE_PASSWORD:-mypassword}
+      - --spring.mongodb.uri=${CHAT_SERVER_MONGO_URI:-mongodb://mongodb:27017/commentdb}
+    ports:
+      - "8081:8081"
+    cpus: "2.0"
+    mem_limit: "4g"
+    mem_reservation: "2g"
+    environment:
+      JAVA_TOOL_OPTIONS: >-
+        -XX:InitialRAMPercentage=10
+        -XX:MaxRAMPercentage=35
+        -XX:MaxHeapFreeRatio=20
+        -XX:MinHeapFreeRatio=10
+        -XX:G1PeriodicGCInterval=15000
+        -XX:+ExplicitGCInvokesConcurrent
+        -XX:MaxDirectMemorySize=256m
+        -Xss512k
+    restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8081'"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
+    depends_on:
+      redis:
+        condition: service_started
+      mongodb:
+        condition: service_started
+      oracle-db:
+        condition: service_started
+      comment-consumer:
+        condition: service_started
+      redis-node-1:
+        condition: service_started
+      redis-node-2:
+        condition: service_started
+      redis-node-3:
+        condition: service_started
+      redis-node-4:
+        condition: service_started
+      redis-node-5:
+        condition: service_started
+      redis-node-6:
+        condition: service_started
+      redis-cluster-init:
+        condition: service_completed_successfully
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    networks:
+      - redis-cluster-network
+
+  nginx-lb:
+    image: nginx:1.27-alpine
+    container_name: chat-server-lb
+    ports:
+      - "8088:80"
+    volumes:
+      - ./nginx/chat-lb.conf:/etc/nginx/conf.d/default.conf:ro
+    depends_on:
+      chat-server:
+        condition: service_healthy
+      chat-server-2:
+        condition: service_healthy
+    restart: unless-stopped
     networks:
       - redis-cluster-network
 
