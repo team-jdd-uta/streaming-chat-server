@@ -21,7 +21,7 @@ Redis Cluster 기반 Pub/Sub으로 실시간 스트리밍 채팅을 제공하는
 - Redis 7 (Cluster)
 - Docker Compose
 
-## 실행 방식(권장: Docker 단일 chat-server)
+## 실행 방식(권장: Docker 다중 chat-server + Nginx LB)
 
 ### 사전 준비
 1. Docker / Docker Compose
@@ -49,13 +49,17 @@ docker compose up -d
 ```bash
 docker compose ps
 docker compose logs -f chat-server
+docker compose logs -f chat-server-2
 docker compose logs -f comment-consumer
+docker compose logs -f nginx-lb
 docker compose logs -f redis-cluster-init
 ```
 
 ### 3) 확인
 ```bash
-curl http://localhost:8080/chat/rooms
+curl http://localhost:8080/chat/rooms   # chat-server-1
+curl http://localhost:8081/chat/rooms   # chat-server-2
+curl http://localhost:8088/chat/rooms   # nginx LB (권장 진입점)
 ```
 
 ## 로그인 API 주의사항
@@ -68,7 +72,7 @@ curl http://localhost:8080/chat/rooms
 
 예시:
 ```bash
-curl -X POST http://localhost:8080/login/user001/pass1
+curl -X POST http://localhost:8088/login/user001/pass1
 ```
 
 ## 리소스 제한(chat-server)
@@ -76,12 +80,15 @@ curl -X POST http://localhost:8080/login/user001/pass1
 - CPU: `2.0`
 - Memory limit: `4g`
 - Memory reservation: `2g`
+  - 위 제한은 `chat-server`, `chat-server-2` 각각에 적용된다.
 
 ## 로그
 - chat-server 로그 파일: `streaming-chat-server/server1.log`
 - 컨테이너 로그 확인:
 ```bash
 docker logs -f chat-server
+docker logs -f chat-server-2
+docker logs -f chat-server-lb
 ```
 
 ## 종료
