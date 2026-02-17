@@ -15,6 +15,7 @@ import org.springframework.stereotype.Service;
 import jakarta.annotation.PostConstruct;
 import java.time.Duration;
 import java.time.Instant;
+import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
@@ -33,12 +34,17 @@ public class ChatRoomService {
     // Redis 메시지 리스너 컨테이너와 발행자 (Publisher)
     private final RedisMessageListenerContainer redisMessageListenerContainer;
     private final RedisSubscriber redisSubscriber; // Redis Pub/Sub 메시지를 처리하는 구독자
+    private final ChatRoomSessionTracker chatRoomSessionTracker;
     // roomId -> topic 상태(구독 토픽 + 로컬 참조 카운트 + 마지막 활동 시간)
     private Map<String, TopicState> topics;
 
     @Value("${chat.topic.cleanup.idle-threshold:60s}")
     // topic 정리 임계시간: 로컬 참조가 0이고 이 시간 동안 활동이 없으면 구독 해지
     private Duration topicCleanupIdleThreshold;
+
+    @Value("${chat.topic.reconcile.interval:15s}")
+    // 변경: refcount와 실제 websocket 세션 수를 주기적으로 맞추는 보정 주기
+    private Duration topicReconcileInterval;
 
     @PostConstruct
     private void init() {
@@ -101,6 +107,22 @@ public class ChatRoomService {
         });
     }
 
+    @Scheduled(fixedDelayString = "${chat.topic.reconcile.interval:15s}")
+    public void reconcileTopicRefCounts() {
+        // 변경: 비정상 종료/중복 이벤트로 어긋난 refcount를 실제 websocket 세션 수로 보정한다.
+        topics.forEach((roomId, state) -> {
+            int expected = chatRoomSessionTracker.countByRoom(roomId);
+            int current = state.localRefCount.get();
+            if (current == expected) {
+                return;
+            }
+            state.localRefCount.set(expected);
+            state.touch();
+            log.warn("Reconciled topic refcount. roomId={}, previousRefCount={}, expectedRefCount={}, interval={}",
+                    roomId, current, expected, topicReconcileInterval);
+        });
+    }
+
     /**
      * 주기적으로 유휴 topic 정리:
      * - 로컬 참조 카운트가 0이고
@@ -133,6 +155,34 @@ public class ChatRoomService {
     public ChannelTopic getTopic(String roomId) {
         TopicState state = topics.get(roomId);
         return state == null ? null : state.topic;
+    }
+
+    /**
+     * 모니터링/운영 조회용 스냅샷 생성.
+     * - 내부 가변 상태(TopicState)를 외부로 직접 노출하지 않고
+     * - roomId 기준의 불변 DTO(TopicSnapshot)로 복사해 반환한다.
+     *
+     * 반환 Map 의미:
+     * - key: roomId
+     * - value.localRefCount: 서버가 현재 인지한 room의 로컬 참조 수
+     * - value.lastTouchedAt: ENTER/QUIT/reconcile 등으로 마지막 갱신된 시각
+     * - value.subscribed: topic이 topics 맵에 존재하는지(현재 구현에서는 존재 시 true)
+     */
+    public Map<String, TopicSnapshot> topicSnapshots() {
+        Map<String, TopicSnapshot> snapshots = new LinkedHashMap<>();
+        topics.forEach((roomId, state) -> snapshots.put(roomId, new TopicSnapshot(
+                state.localRefCount.get(),
+                state.lastTouchedAt.get(),
+                true
+        )));
+        return snapshots;
+    }
+
+    /**
+     * room topic 상태 조회 전용 불변 DTO.
+     * OpsRoomStatusController에서 방별 websocket/listener 상태 응답을 만들 때 사용된다.
+     */
+    public record TopicSnapshot(int localRefCount, Instant lastTouchedAt, boolean subscribed) {
     }
 
     private static class TopicState {
