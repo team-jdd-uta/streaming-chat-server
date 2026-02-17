@@ -69,7 +69,8 @@ public class WebSocketOpsController {
         long queuedTasks = (long) outbound.getOrDefault("queuedTasks", -1L);
         if (queuedTasks >= 0) {
             // outbound queued tasks를 fanout metrics에도 반영해 병목 추세를 단일 지표로 확인
-            fanoutMetrics.recordOutboundChannelQueueDepth((int) queuedTasks);
+            int queueDepth = queuedTasks > Integer.MAX_VALUE ? Integer.MAX_VALUE : (int) queuedTasks;
+            fanoutMetrics.recordOutboundChannelQueueDepth(queueDepth);
         }
         response.put("fanout", fanoutMetrics.snapshot());
         response.put("clientOutboundExecutor", outbound);

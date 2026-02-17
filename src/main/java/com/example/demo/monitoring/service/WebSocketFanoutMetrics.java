@@ -122,15 +122,12 @@ public class WebSocketFanoutMetrics {
         updateMax(outboundChannelInFlightMax, inFlight);
     }
 
-    public void outboundChannelMessageCompleted(long durationNanos, boolean sent) {
+    public void outboundChannelMessageCompleted(long durationNanos) {
         long durationMs = Math.max(0L, durationNanos / 1_000_000L);
         outboundChannelLatencyCount.increment();
         outboundChannelLatencySumMs.add(durationMs);
         updateMax(outboundChannelLatencyMaxMs, durationMs);
         outboundChannelHandled.increment();
-        if (!sent) {
-            outboundChannelFailed.increment();
-        }
         long remaining = outboundChannelInFlight.decrementAndGet();
         if (remaining < 0) {
             outboundChannelInFlight.set(0);
@@ -139,6 +136,10 @@ public class WebSocketFanoutMetrics {
 
     public void recordOutboundChannelRejected() {
         outboundChannelRejected.increment();
+    }
+
+    public void recordOutboundChannelFailed() {
+        outboundChannelFailed.increment();
     }
 
     public void recordOutboundChannelQueueDepth(int queueDepth) {

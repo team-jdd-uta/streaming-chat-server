@@ -7,6 +7,8 @@ import org.springframework.messaging.support.ChannelInterceptor;
 import org.springframework.messaging.support.MessageBuilder;
 import org.springframework.stereotype.Component;
 
+import java.util.concurrent.RejectedExecutionException;
+
 @Component
 public class OutboundChannelMetricsInterceptor implements ChannelInterceptor {
 
@@ -32,6 +34,28 @@ public class OutboundChannelMetricsInterceptor implements ChannelInterceptor {
         Object start = message.getHeaders().get(START_NANOS_HEADER);
         // 헤더 누락 시 현재 시각으로 보정해 음수 지연/예외 전파를 방지
         long startedAt = (start instanceof Number number) ? number.longValue() : System.nanoTime();
-        fanoutMetrics.outboundChannelMessageCompleted(System.nanoTime() - startedAt, sent);
+        fanoutMetrics.outboundChannelMessageCompleted(System.nanoTime() - startedAt);
+        if (ex != null) {
+            if (isRejected(ex)) {
+                fanoutMetrics.recordOutboundChannelRejected();
+            } else {
+                fanoutMetrics.recordOutboundChannelFailed();
+            }
+            return;
+        }
+        if (!sent) {
+            fanoutMetrics.recordOutboundChannelFailed();
+        }
+    }
+
+    private boolean isRejected(Throwable throwable) {
+        Throwable current = throwable;
+        while (current != null) {
+            if (current instanceof RejectedExecutionException) {
+                return true;
+            }
+            current = current.getCause();
+        }
+        return false;
     }
 }
