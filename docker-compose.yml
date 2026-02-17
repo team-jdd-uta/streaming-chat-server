@@ -58,6 +58,7 @@ services:
       - redis-cluster-network
 
   chat-server:
+    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
