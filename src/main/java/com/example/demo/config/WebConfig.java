@@ -14,7 +14,8 @@ public class WebConfig implements WebMvcConfigurer {
             .allowedOriginPatterns(
                 "http://localhost:*",
                 "http://127.0.0.1:*",
-                "https://*.ngrok-free.app"
+                "https://*.ngrok-free.app",
+                "https://*.ngrok-free.dev"
             )
             // 모든 HTTP 메서드를 허용한다.
             .allowedMethods("*")
