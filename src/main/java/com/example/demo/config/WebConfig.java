@@ -10,7 +10,6 @@ public class WebConfig implements WebMvcConfigurer {
     @Override
     public void addCorsMappings(CorsRegistry registry) {
         registry.addMapping("/**")
-            // 로컬 개발/테스트 + ngrok 도메인을 허용한다.
             .allowedOriginPatterns(
                 "http://localhost:*",
                 "http://127.0.0.1:*",

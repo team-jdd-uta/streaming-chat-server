@@ -63,7 +63,8 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                         "https://*.ngrok-free.dev"
                 )
                 .addInterceptors(drainingHandshakeInterceptor)
-                .withSockJS();
+                .withSockJS()
+                .setSessionCookieNeeded(false);
     }
 
     @Override
