@@ -20,9 +20,11 @@ public class TrackingWebSocketHandlerDecoratorFactory implements WebSocketHandle
 
     @Override
     public WebSocketHandler decorate(WebSocketHandler handler) {
+        // WebSocket lifecycle 훅을 가로채 세션 레지스트리/메트릭을 일관되게 관리한다.
         return new WebSocketHandlerDecorator(handler) {
             @Override
             public void afterConnectionEstablished(WebSocketSession session) throws Exception {
+                // 세션 만료 시각(TTL)을 함께 등록해 drain/강제종료 정책과 연계한다.
                 Instant expiresAt = Instant.now().plus(lifecycleProperties.getTtl());
                 sessionRegistry.register(session, expiresAt);
                 super.afterConnectionEstablished(session);
