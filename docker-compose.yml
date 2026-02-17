@@ -104,6 +104,12 @@ services:
         -XX:MaxDirectMemorySize=256m
         -Xss512k
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8080'"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
     depends_on:
       redis:
         condition: service_started
@@ -162,6 +168,12 @@ services:
         -XX:MaxDirectMemorySize=256m
         -Xss512k
     restart: unless-stopped
+    healthcheck:
+      test: ["CMD-SHELL", "bash -c 'cat < /dev/null > /dev/tcp/127.0.0.1/8081'"]
+      interval: 10s
+      timeout: 3s
+      retries: 10
+      start_period: 20s
     depends_on:
       redis:
         condition: service_started
@@ -199,9 +211,9 @@ services:
       - ./nginx/chat-lb.conf:/etc/nginx/conf.d/default.conf:ro
     depends_on:
       chat-server:
-        condition: service_started
+        condition: service_healthy
       chat-server-2:
-        condition: service_started
+        condition: service_healthy
     restart: unless-stopped
     networks:
       - redis-cluster-network
