@@ -154,8 +154,6 @@ services:
         condition: service_started
       redis-cluster-init:
         condition: service_completed_successfully
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - redis-cluster-network
 
