@@ -5,6 +5,7 @@ import com.example.demo.service.WebSocketControlService;
 import com.example.demo.service.WebSocketDrainService;
 import com.example.demo.service.WebSocketSessionRegistry;
 import lombok.RequiredArgsConstructor;
+import org.springframework.context.annotation.Profile;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.socket.config.WebSocketMessageBrokerStats;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,6 +22,7 @@ import java.util.regex.Pattern;
 
 @RestController
 @RequestMapping("/ops/ws")
+@Profile("!prod")
 @RequiredArgsConstructor
 public class WebSocketOpsController {
 
