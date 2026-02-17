@@ -2,7 +2,6 @@ package com.example.demo.entity;
 
 import jakarta.persistence.*;
 import lombok.*;
-import java.time.LocalDateTime;
 
 @Entity
 @Table(name = "category")
@@ -23,5 +22,4 @@ public class Category {
     @Column(name = "parent_category_id")
     private Long parentCategoryId;
 }
-
 

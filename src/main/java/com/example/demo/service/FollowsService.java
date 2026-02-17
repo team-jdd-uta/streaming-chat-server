@@ -5,7 +5,6 @@ import com.example.demo.model.DTO.CustomerDTO;
 import com.example.demo.repository.CustomerRepository;
 import com.example.demo.repository.FollowsRepository;
 import org.apache.ibatis.session.SqlSession;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataAccessException;
 import org.springframework.stereotype.Service;
 

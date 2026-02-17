@@ -48,6 +48,20 @@ public class ChatRoomController {
         return chatRoomService.createChatRoom(name.trim());
     }
 
+    // 채팅방 삭제
+    @DeleteMapping("/room/{roomId}")
+    public ChatRoom deleteRoom(@PathVariable String roomId) {
+        if (isBlank(roomId)) {
+            throw new IllegalArgumentException("roomId is required");
+        }
+
+        ChatRoom deleted = chatRoomService.deleteChatRoom(roomId.trim());
+        if (deleted == null) {
+            throw new NoSuchElementException("chat room not found: " + roomId);
+        }
+        return deleted;
+    }
+
     //TODO : controller 단에서 비즈니스 로직이?
     private boolean isBlank(String value) {
         return value == null || value.trim().isEmpty();

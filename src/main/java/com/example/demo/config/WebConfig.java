@@ -15,9 +15,17 @@ public class WebConfig implements WebMvcConfigurer {
 
     @Override
     public void addCorsMappings(CorsRegistry registry) {
+        // 로컬/도커 테스트 클라이언트 접근 허용
+        // 운영 배포 시에는 허용 Origin을 환경별로 더 엄격히 제한해야 한다.
         registry.addMapping("/**") // 모든 API 허용
-                .allowedOrigins("http://localhost:5173") // 프론트 주소
+                .allowedOrigins(
+                        "http://localhost:5173",
+                        "http://localhost:5001",
+                        "http://127.0.0.1:5173",
+                        "http://127.0.0.1:5001"
+                ) // 프론트 주소
                 .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
+                .allowedHeaders("*")
                 .allowCredentials(true);
     }
 }

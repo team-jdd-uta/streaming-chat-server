@@ -58,6 +58,19 @@ docker compose logs -f redis-cluster-init
 curl http://localhost:8080/chat/rooms
 ```
 
+## 로그인 API 주의사항
+- 로그인 API는 `POST /login/{userId}/{password}` 이다. (`GET` 아님)
+- 현재 로그인 검증은 DB의 `customer` 테이블에서 `user_id + password` 존재 여부를 조회한다.
+- Docker 기본 계정 데이터는 `init-user.sql` 기준 `UTA.customer`에 생성된다.
+  - 예: `user001 / pass1`
+- 따라서 Docker 실행 시 `CHAT_SERVER_ORACLE_USERNAME`/`CHAT_SERVER_ORACLE_PASSWORD`가
+  `UTA`/`1234`와 다르면(예: `SYSTEM`) 기본 계정 로그인에 실패할 수 있다.
+
+예시:
+```bash
+curl -X POST http://localhost:8080/login/user001/pass1
+```
+
 ## 리소스 제한(chat-server)
 `streaming-chat-server/docker-compose.yml`에 다음 제한이 적용된다.
 - CPU: `2.0`

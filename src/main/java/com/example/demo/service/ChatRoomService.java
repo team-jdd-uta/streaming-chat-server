@@ -76,6 +76,24 @@ public class ChatRoomService {
     }
 
     /**
+     * 채팅방 삭제
+     */
+    public ChatRoom deleteChatRoom(String roomId) {
+        ChatRoom chatRoom = opsHashChatRoom.get(CHAT_ROOMS, roomId);
+        if (chatRoom == null) {
+            return null;
+        }
+        opsHashChatRoom.delete(CHAT_ROOMS, roomId);
+
+        TopicState removedState = topics.remove(roomId);
+        if (removedState != null) {
+            redisMessageListenerContainer.removeMessageListener(redisSubscriber, removedState.topic);
+            log.info("Unsubscribed Redis topic after room deletion: {}", roomId);
+        }
+        return chatRoom;
+    }
+
+    /**
      * 채팅방 입장 시, 해당 채팅방의 메시지를 받기 위한 Redis Topic 구독
      */
     public void enterChatRoom(String roomId) {

@@ -81,6 +81,34 @@ services:
       - --spring.datasource.username=${CHAT_SERVER_ORACLE_USERNAME:-SYSTEM}
       - --spring.datasource.password=${CHAT_SERVER_ORACLE_PASSWORD:-mypassword}
       - --spring.mongodb.uri=${CHAT_SERVER_MONGO_URI:-mongodb://mongodb:27017/commentdb}
+      # WebSocket transport/channel tuning for high fan-out load
+      - --chat.ws.transport.message-size-limit=${CHAT_SERVER_WS_MESSAGE_SIZE_LIMIT:-262144}
+      - --chat.ws.transport.send-buffer-size-limit=${CHAT_SERVER_WS_SEND_BUFFER_SIZE_LIMIT:-4194304}
+      - --chat.ws.transport.send-time-limit-ms=${CHAT_SERVER_WS_SEND_TIME_LIMIT_MS:-120000}
+      - --chat.ws.channel.inbound.core-pool-size=${CHAT_SERVER_WS_INBOUND_CORE_POOL_SIZE:-16}
+      - --chat.ws.channel.inbound.max-pool-size=${CHAT_SERVER_WS_INBOUND_MAX_POOL_SIZE:-128}
+      - --chat.ws.channel.inbound.queue-capacity=${CHAT_SERVER_WS_INBOUND_QUEUE_CAPACITY:-50000}
+      - --chat.ws.channel.outbound.core-pool-size=${CHAT_SERVER_WS_OUTBOUND_CORE_POOL_SIZE:-16}
+      - --chat.ws.channel.outbound.max-pool-size=${CHAT_SERVER_WS_OUTBOUND_MAX_POOL_SIZE:-128}
+      - --chat.ws.channel.outbound.queue-capacity=${CHAT_SERVER_WS_OUTBOUND_QUEUE_CAPACITY:-50000}
+      - --chat.redis.listener.task-executor.core-pool-size=${CHAT_SERVER_REDIS_LISTENER_CORE_POOL_SIZE:-8}
+      - --chat.redis.listener.task-executor.max-pool-size=${CHAT_SERVER_REDIS_LISTENER_MAX_POOL_SIZE:-64}
+      - --chat.redis.listener.task-executor.queue-capacity=${CHAT_SERVER_REDIS_LISTENER_QUEUE_CAPACITY:-20000}
+      - --chat.redis.listener.subscription-executor.core-pool-size=${CHAT_SERVER_REDIS_SUBSCRIPTION_CORE_POOL_SIZE:-4}
+      - --chat.redis.listener.subscription-executor.max-pool-size=${CHAT_SERVER_REDIS_SUBSCRIPTION_MAX_POOL_SIZE:-16}
+      - --chat.redis.listener.subscription-executor.queue-capacity=${CHAT_SERVER_REDIS_SUBSCRIPTION_QUEUE_CAPACITY:-1000}
+      - --chat.fanout.talk.executor.core-pool-size=${CHAT_SERVER_FANOUT_TALK_CORE_POOL_SIZE:-8}
+      - --chat.fanout.talk.executor.max-pool-size=${CHAT_SERVER_FANOUT_TALK_MAX_POOL_SIZE:-32}
+      - --chat.fanout.talk.executor.queue-capacity=${CHAT_SERVER_FANOUT_TALK_QUEUE_CAPACITY:-10000}
+      - --chat.fanout.system.executor.core-pool-size=${CHAT_SERVER_FANOUT_SYSTEM_CORE_POOL_SIZE:-2}
+      - --chat.fanout.system.executor.max-pool-size=${CHAT_SERVER_FANOUT_SYSTEM_MAX_POOL_SIZE:-8}
+      - --chat.fanout.system.executor.queue-capacity=${CHAT_SERVER_FANOUT_SYSTEM_QUEUE_CAPACITY:-2000}
+      - --chat.fanout.backpressure.policy=${CHAT_SERVER_FANOUT_BACKPRESSURE_POLICY:-drop-newest}
+      - --chat.fanout.backpressure.disconnect-count=${CHAT_SERVER_FANOUT_BACKPRESSURE_DISCONNECT_COUNT:-1}
+      - --chat.fanout.backpressure.disconnect-reason=${CHAT_SERVER_FANOUT_BACKPRESSURE_DISCONNECT_REASON:-Slow consumer backpressure}
+      - --chat.fanout.talk.batch.enabled=${CHAT_SERVER_FANOUT_TALK_BATCH_ENABLED:-false}
+      - --chat.fanout.talk.batch.max-size=${CHAT_SERVER_FANOUT_TALK_BATCH_MAX_SIZE:-20}
+      - --chat.fanout.talk.batch.max-wait-ms=${CHAT_SERVER_FANOUT_TALK_BATCH_MAX_WAIT_MS:-20}
     ports:
       - "8080:8080"
     # 변경 요청 반영:
@@ -126,8 +154,6 @@ services:
         condition: service_started
       redis-cluster-init:
         condition: service_completed_successfully
-    extra_hosts:
-      - "host.docker.internal:host-gateway"
     networks:
       - redis-cluster-network
 
@@ -256,6 +282,7 @@ services:
   # Oracle Database Service
   # --------------------------
   oracle-db:
+    platform: linux/amd64
     image: gvenzl/oracle-xe:21
     container_name: oracle-db-21
     environment:
