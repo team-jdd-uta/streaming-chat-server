@@ -1,6 +1,5 @@
 package com.example.demo.controller;
 
-import com.example.demo.entity.Customer;
 import com.example.demo.model.DTO.CustomerDTO;
 import com.example.demo.model.DTO.UserInfoDTO;
 import com.example.demo.model.DTO.WatchHistoryDTO;

@@ -1,6 +1,5 @@
 package com.example.demo.service;
 
-import com.example.demo.entity.WatchHistory;
 import com.example.demo.model.DTO.WatchHistoryDTO;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.stereotype.Service;

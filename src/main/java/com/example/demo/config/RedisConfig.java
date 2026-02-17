@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.model.ChatMessage;
 import io.lettuce.core.SocketOptions;
 import io.lettuce.core.cluster.ClusterClientOptions;
 import io.lettuce.core.resource.ClientResources;
