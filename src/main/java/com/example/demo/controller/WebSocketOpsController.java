@@ -25,6 +25,10 @@ import java.util.regex.Pattern;
 @Profile("!prod")
 @RequiredArgsConstructor
 public class WebSocketOpsController {
+    private static final Pattern POOL_SIZE_PATTERN = Pattern.compile("pool size = (\\d+)");
+    private static final Pattern ACTIVE_THREADS_PATTERN = Pattern.compile("active threads = (\\d+)");
+    private static final Pattern QUEUED_TASKS_PATTERN = Pattern.compile("queued tasks = (\\d+)");
+    private static final Pattern COMPLETED_TASKS_PATTERN = Pattern.compile("completed tasks = (\\d+)");
 
     private final WebSocketDrainService drainService;
     private final WebSocketSessionRegistry sessionRegistry;
@@ -83,18 +87,18 @@ public class WebSocketOpsController {
         payload.put("raw", statsInfo);
         // 예: "pool size = 8, active threads = 2, queued tasks = 91, completed tasks = ..."
         // 문자열 포맷이 바뀌면 -1로 떨어지므로, 대시보드에서 포맷 변화 감지도 가능하다.
-        payload.put("poolSize", extractNumber(statsInfo, "pool size = (\\d+)"));
-        payload.put("activeThreads", extractNumber(statsInfo, "active threads = (\\d+)"));
-        payload.put("queuedTasks", extractNumber(statsInfo, "queued tasks = (\\d+)"));
-        payload.put("completedTasks", extractNumber(statsInfo, "completed tasks = (\\d+)"));
+        payload.put("poolSize", extractNumber(statsInfo, POOL_SIZE_PATTERN));
+        payload.put("activeThreads", extractNumber(statsInfo, ACTIVE_THREADS_PATTERN));
+        payload.put("queuedTasks", extractNumber(statsInfo, QUEUED_TASKS_PATTERN));
+        payload.put("completedTasks", extractNumber(statsInfo, COMPLETED_TASKS_PATTERN));
         return payload;
     }
 
-    private long extractNumber(String text, String regex) {
+    private long extractNumber(String text, Pattern pattern) {
         if (text == null || text.isBlank()) {
             return -1L;
         }
-        Matcher matcher = Pattern.compile(regex).matcher(text);
+        Matcher matcher = pattern.matcher(text);
         if (!matcher.find()) {
             return -1L;
         }
