@@ -58,7 +58,6 @@ services:
       - redis-cluster-network
 
   chat-server:
-    platform: linux/amd64
     build:
       context: .
       dockerfile: Dockerfile
@@ -257,6 +256,7 @@ services:
   # Oracle Database Service
   # --------------------------
   oracle-db:
+    platform: linux/amd64
     image: gvenzl/oracle-xe:21
     container_name: oracle-db-21
     environment:
