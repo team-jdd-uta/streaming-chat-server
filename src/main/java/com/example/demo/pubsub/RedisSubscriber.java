@@ -1,7 +1,6 @@
 package com.example.demo.pubsub;
 
 import com.example.demo.model.ChatMessage;
-import com.example.demo.monitoring.service.WebSocketFanoutMetrics;
 import com.example.demo.service.WebSocketSessionRegistry;
 import jakarta.annotation.PostConstruct;
 import jakarta.annotation.PreDestroy;
@@ -37,7 +36,6 @@ public class RedisSubscriber implements MessageListener {
     private final RedisTemplate<String, Object> redisTemplate; // RedisTemplate을 주입받아 사용
     private final SimpMessagingTemplate messagingTemplate; // 특정 Broker로 메시지를 전달
     private final WebSocketSessionRegistry webSocketSessionRegistry;
-    private final WebSocketFanoutMetrics fanoutMetrics;
 
     // TALK 메시지 fan-out 전용 실행기 튜닝값들
     // 목적: 시스템 메시지(ENTER/QUIT)와 작업 큐를 분리해 혼잡 전파를 줄이기 위함
@@ -77,13 +75,11 @@ public class RedisSubscriber implements MessageListener {
     public RedisSubscriber(
             RedisTemplate<String, Object> redisTemplate,
             SimpMessagingTemplate messagingTemplate,
-            WebSocketSessionRegistry webSocketSessionRegistry,
-            WebSocketFanoutMetrics fanoutMetrics
+            WebSocketSessionRegistry webSocketSessionRegistry
     ) {
         this.redisTemplate = redisTemplate;
         this.messagingTemplate = messagingTemplate;
         this.webSocketSessionRegistry = webSocketSessionRegistry;
-        this.fanoutMetrics = fanoutMetrics;
     }
 
     @PostConstruct
@@ -142,11 +138,9 @@ public class RedisSubscriber implements MessageListener {
 
             // WebSocket 구독자에게 채팅 메시지 발송
             if (chatMessage != null) {
-                fanoutMetrics.recordRedisMessageReceived(chatMessage);
                 dispatchFanout(chatMessage);
             }
         } catch (Exception e) {
-            fanoutMetrics.recordRedisDeserializeError();
             log.error("Error deserializing message or sending to WebSocket: {}", e.getMessage(), e);
         }
     }
@@ -164,7 +158,6 @@ public class RedisSubscriber implements MessageListener {
 
         try {
             executor.execute(task);
-            fanoutMetrics.recordFanoutEnqueued(talk, queueDepth);
         } catch (RejectedExecutionException rejectedExecutionException) {
             // 큐 포화 시 정책 기반 처리(drop/disconnect)로 메모리 무한증가를 막는다.
             applyBackpressurePolicy(executor, task, talk, rejectedExecutionException);
@@ -201,7 +194,6 @@ public class RedisSubscriber implements MessageListener {
         Runnable task = () -> fanoutToWebSocket(chatMessage);
         try {
             talkFanoutExecutor.execute(task);
-            fanoutMetrics.recordFanoutEnqueued(true, queueDepth);
         } catch (RejectedExecutionException rejectedExecutionException) {
             applyBackpressurePolicy(talkFanoutExecutor, task, true, rejectedExecutionException);
         }
@@ -240,7 +232,6 @@ public class RedisSubscriber implements MessageListener {
         Runnable task = () -> fanoutBatchToWebSocket(roomId, messages);
         try {
             talkFanoutExecutor.execute(task);
-            fanoutMetrics.recordFanoutEnqueued(true, queueDepth);
         } catch (RejectedExecutionException rejectedExecutionException) {
             applyBackpressurePolicy(talkFanoutExecutor, task, true, rejectedExecutionException);
         }
@@ -261,8 +252,10 @@ public class RedisSubscriber implements MessageListener {
                     exception
             );
         } finally {
-            // convertAndSend 호출 시간을 기록해 fan-out 지연 분포를 추적한다.
-            fanoutMetrics.recordFanoutConvertResult(System.nanoTime() - startedAt, throwable);
+            long durationMs = Math.max(0L, (System.nanoTime() - startedAt) / 1_000_000L);
+            if (durationMs > 500) {
+                log.debug("Fan-out convertAndSend took {}ms. roomId={}", durationMs, chatMessage.getRoomId());
+            }
         }
     }
 
@@ -280,7 +273,10 @@ public class RedisSubscriber implements MessageListener {
             throwable = exception;
             log.warn("Failed to fan-out batched TALK messages. roomId={}, count={}", roomId, messages.size(), exception);
         } finally {
-            fanoutMetrics.recordFanoutConvertResult(System.nanoTime() - startedAt, throwable);
+            long durationMs = Math.max(0L, (System.nanoTime() - startedAt) / 1_000_000L);
+            if (durationMs > 500) {
+                log.debug("Fan-out batch convertAndSend took {}ms. roomId={}, count={}", durationMs, roomId, messages.size());
+            }
         }
     }
 
@@ -293,29 +289,20 @@ public class RedisSubscriber implements MessageListener {
         switch (backpressurePolicy) {
             case DROP_OLDEST -> {
                 // 가장 오래 대기 중인 작업을 버리고 최신 작업을 살리는 전략
-                Runnable droppedTask = executor.getQueue().poll();
-                if (droppedTask != null) {
-                    fanoutMetrics.recordDroppedOldest();
-                } else {
-                    fanoutMetrics.recordDroppedNewest();
-                }
+                executor.getQueue().poll();
                 try {
                     executor.execute(incomingTask);
-                    fanoutMetrics.recordFanoutEnqueued(talk, executor.getQueue().size());
                 } catch (RejectedExecutionException retryException) {
-                    fanoutMetrics.recordDroppedNewest();
                     log.debug("Fan-out queue still full after DROP_OLDEST retry. policy={}", backpressurePolicy, retryException);
                 }
             }
             case DROP_NEWEST -> {
                 // 현재 유입된 작업을 버려 기존 큐 처리 완결성을 우선
-                fanoutMetrics.recordDroppedNewest();
                 log.debug("Fan-out queue full. Dropping newest message. policy={}", backpressurePolicy, rejectedExecutionException);
             }
             case DISCONNECT_SLOW_CONSUMER -> {
                 // 느린 소비자 세션 일부를 강제 종료해 전체 큐 회복을 유도
                 int closed = disconnectSessionsForBackpressure(Math.max(1, backpressureDisconnectCount), backpressureDisconnectReason);
-                fanoutMetrics.recordDroppedDisconnectPolicy(closed);
                 log.debug(
                         "Fan-out queue full. Applied disconnect policy. disconnectedSessions={}, reason={}",
                         closed,

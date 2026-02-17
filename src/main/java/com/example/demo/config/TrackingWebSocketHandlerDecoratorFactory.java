@@ -1,7 +1,6 @@
 package com.example.demo.config;
 
 import com.example.demo.service.WebSocketSessionRegistry;
-import com.example.demo.monitoring.service.WebSocketFanoutMetrics;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
 import org.springframework.web.socket.CloseStatus;
@@ -18,7 +17,6 @@ public class TrackingWebSocketHandlerDecoratorFactory implements WebSocketHandle
 
     private final WebSocketSessionRegistry sessionRegistry;
     private final WebSocketLifecycleProperties lifecycleProperties;
-    private final WebSocketFanoutMetrics fanoutMetrics;
 
     @Override
     public WebSocketHandler decorate(WebSocketHandler handler) {
@@ -34,9 +32,7 @@ public class TrackingWebSocketHandlerDecoratorFactory implements WebSocketHandle
 
             @Override
             public void afterConnectionClosed(WebSocketSession session, CloseStatus closeStatus) throws Exception {
-                // close code 집계는 fan-out 안정성(1011/1006 등) 원인 분석 핵심 데이터다.
                 sessionRegistry.unregister(session.getId());
-                fanoutMetrics.recordCloseStatus(closeStatus);
                 super.afterConnectionClosed(session, closeStatus);
             }
         };

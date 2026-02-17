@@ -1,6 +1,5 @@
 package com.example.demo.config;
 
-import com.example.demo.monitoring.config.OutboundChannelMetricsInterceptor;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.boot.context.properties.EnableConfigurationProperties;
 import org.springframework.beans.factory.annotation.Value;
@@ -18,7 +17,6 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     private final DrainingHandshakeInterceptor drainingHandshakeInterceptor;
     private final TrackingWebSocketHandlerDecoratorFactory trackingWebSocketHandlerDecoratorFactory;
-    private final OutboundChannelMetricsInterceptor outboundChannelMetricsInterceptor;
     // 전송 계층 튜닝값: 대형 payload/느린 네트워크 상황에서 끊김을 완화하기 위한 설정
     @Value("${chat.ws.transport.message-size-limit:65536}")
     private int messageSizeLimit;
@@ -43,12 +41,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
     public WebSocketConfig(
             DrainingHandshakeInterceptor drainingHandshakeInterceptor,
-            TrackingWebSocketHandlerDecoratorFactory trackingWebSocketHandlerDecoratorFactory,
-            OutboundChannelMetricsInterceptor outboundChannelMetricsInterceptor
+            TrackingWebSocketHandlerDecoratorFactory trackingWebSocketHandlerDecoratorFactory
     ) {
         this.drainingHandshakeInterceptor = drainingHandshakeInterceptor;
         this.trackingWebSocketHandlerDecoratorFactory = trackingWebSocketHandlerDecoratorFactory;
-        this.outboundChannelMetricsInterceptor = outboundChannelMetricsInterceptor;
     }
 
     @Override
@@ -89,7 +85,5 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
                 .corePoolSize(outboundCorePoolSize)
                 .maxPoolSize(outboundMaxPoolSize)
                 .queueCapacity(outboundQueueCapacity);
-        // outbound 채널 지연/실패를 실시간 관측하기 위한 인터셉터
-        registration.interceptors(outboundChannelMetricsInterceptor);
     }
 }
