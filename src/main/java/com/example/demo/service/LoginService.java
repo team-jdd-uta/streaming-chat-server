@@ -14,4 +14,12 @@ public class LoginService {
     public boolean login(String userId, String password) {
         return customerRepository.existsByUserIdAndPassword(userId, password);
     }
+
+    public boolean logout(String userId) {
+        // 유저 아이디가 DB에 존재하는지 확인
+        if (!customerRepository.existsByUserId(userId)) {
+            throw new IllegalArgumentException("User not found: " + userId);
+        }
+        return true;
+    }
 }
