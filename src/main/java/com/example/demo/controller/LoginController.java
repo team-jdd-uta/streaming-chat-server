@@ -22,6 +22,11 @@ public class LoginController {
         return false;
     }
 
+    @PostMapping("/signup/{userId}/{password}")
+    public boolean signup(@PathVariable String userId, @PathVariable String password) {
+        return loginService.signup(userId, password);
+    }
+
     @PostMapping("/logout/{userId}")
     public boolean logout(@PathVariable String userId) {
         if (userId == null || userId.trim().isEmpty()) {
