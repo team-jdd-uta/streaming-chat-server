@@ -174,7 +174,11 @@ public class RedisSubscriber implements MessageListener {
     private void enqueueTalkBatch(ChatMessage chatMessage) {
         String roomId = chatMessage.getRoomId();
         if (roomId == null || roomId.isBlank()) {
-            dispatchDirectTalk(chatMessage);
+            log.warn(
+                    "Drop TALK message with blank roomId. type={}, msgId={}",
+                    chatMessage.getType(),
+                    chatMessage.getMsgId()
+            );
             return;
         }
         TalkBatchBuffer buffer = talkBatchBuffers.computeIfAbsent(roomId, ignored -> new TalkBatchBuffer());
@@ -193,17 +197,6 @@ public class RedisSubscriber implements MessageListener {
         }
         if (toFlush != null && !toFlush.isEmpty()) {
             submitTalkBatch(roomId, toFlush);
-        }
-    }
-
-    private void dispatchDirectTalk(ChatMessage chatMessage) {
-        int queueDepth = talkFanoutExecutor.getQueue().size();
-        Runnable task = () -> fanoutToWebSocket(chatMessage);
-        try {
-            talkFanoutExecutor.execute(task);
-            fanoutMetrics.recordFanoutEnqueued(true, queueDepth);
-        } catch (RejectedExecutionException rejectedExecutionException) {
-            applyBackpressurePolicy(talkFanoutExecutor, task, true, rejectedExecutionException);
         }
     }
 
