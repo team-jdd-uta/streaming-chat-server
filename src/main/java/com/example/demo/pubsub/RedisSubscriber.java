@@ -16,9 +16,11 @@ import org.springframework.stereotype.Service;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Locale;
 import java.util.Map;
 import java.util.concurrent.ArrayBlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
 import java.util.concurrent.ScheduledExecutorService;
@@ -213,6 +215,9 @@ public class RedisSubscriber implements MessageListener {
         List<ChatMessage> toFlush;
         synchronized (buffer) {
             toFlush = drainBufferLocked(buffer);
+            if (buffer.messages.isEmpty() && buffer.scheduledFlush == null) {
+                talkBatchBuffers.remove(roomId, buffer);
+            }
         }
         if (!toFlush.isEmpty()) {
             submitTalkBatch(roomId, toFlush);
@@ -373,20 +378,17 @@ public class RedisSubscriber implements MessageListener {
             List<ChatMessage> remaining;
             synchronized (buffer) {
                 remaining = drainBufferLocked(buffer);
+                if (buffer.messages.isEmpty() && buffer.scheduledFlush == null) {
+                    talkBatchBuffers.remove(roomId, buffer);
+                }
             }
             if (!remaining.isEmpty()) {
                 submitTalkBatch(roomId, remaining);
             }
         }
-        if (talkBatchScheduler != null) {
-            talkBatchScheduler.shutdown();
-        }
-        if (talkFanoutExecutor != null) {
-            talkFanoutExecutor.shutdown();
-        }
-        if (systemFanoutExecutor != null) {
-            systemFanoutExecutor.shutdown();
-        }
+        shutdownGracefully(talkBatchScheduler, "fanout-talk-batch");
+        shutdownGracefully(talkFanoutExecutor, "fanout-talk");
+        shutdownGracefully(systemFanoutExecutor, "fanout-system");
     }
 
     private enum BackpressurePolicy {
@@ -398,7 +400,7 @@ public class RedisSubscriber implements MessageListener {
             if (value == null || value.isBlank()) {
                 return DROP_NEWEST;
             }
-            return switch (value.trim().toLowerCase()) {
+            return switch (value.trim().toLowerCase(Locale.ROOT)) {
                 case "drop-oldest" -> DROP_OLDEST;
                 case "disconnect-slow-consumer" -> DISCONNECT_SLOW_CONSUMER;
                 default -> DROP_NEWEST;
@@ -409,6 +411,27 @@ public class RedisSubscriber implements MessageListener {
     private static class TalkBatchBuffer {
         private final List<ChatMessage> messages = new ArrayList<>();
         private ScheduledFuture<?> scheduledFlush;
+    }
+
+    private void shutdownGracefully(ExecutorService executor, String executorName) {
+        if (executor == null) {
+            return;
+        }
+        executor.shutdown();
+        try {
+            if (!executor.awaitTermination(3, TimeUnit.SECONDS)) {
+                List<Runnable> dropped = executor.shutdownNow();
+                log.warn("Force shutdown '{}' executor. droppedTasks={}", executorName, dropped.size());
+            }
+        } catch (InterruptedException interruptedException) {
+            Thread.currentThread().interrupt();
+            List<Runnable> dropped = executor.shutdownNow();
+            log.warn(
+                    "Interrupted while shutting down '{}' executor. droppedTasks={}",
+                    executorName,
+                    dropped.size()
+            );
+        }
     }
 
 }
